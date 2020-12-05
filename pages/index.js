@@ -7,8 +7,7 @@ import { getSortedPostsData } from '../lib/posts'
 import { fetchFact } from "../Utils/fetchFact"
 import DatePretty from '../components/date'
 
-
-export async function getStaticProps() {
+export async function getServerSideProps() {
   const allPostsData = getSortedPostsData()
   const fact = await fetchFact()
   return {

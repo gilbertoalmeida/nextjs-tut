@@ -1,4 +1,3 @@
-// import { useState, useEffect } from "react"
 import Head from 'next/head'
 import Link from 'next/link'
 import Layout, { siteTitle } from '../components/Layout'
@@ -7,8 +6,7 @@ import { getSortedPostsData } from '../lib/posts'
 import { fetchFact } from "../Utils/fetchFact"
 import DatePretty from '../components/date'
 
-
-export async function getStaticProps() {
+export async function getServerSideProps() {
   const allPostsData = getSortedPostsData()
   const fact = await fetchFact()
   return {
@@ -20,34 +18,13 @@ export async function getStaticProps() {
 }
 
 export default function Home({ allPostsData, fact }) {
-  // const [fact, setfact] = useState({})
-
-  // const fetchingFact = async () => {
-  //   const newfact = await fetchFact()
-  //   setfact(newfact)
-  // }
-
-  // useEffect(() => {
-  //   fetchingFact()
-  // }, [])
-
-
   return (
     <Layout home>
       <Head>
         <title>{siteTitle}</title>
       </Head>
       <section className={utilStyles.headingMd}>
-        <p>[Your Self Introduction]</p>
-        <p>
-          (This is a sample website - you’ll be building a site like this on{' '}
-          <a href="https://nextjs.org/learn">our Next.js tutorial</a>.)
-        </p>
-        <h3>
-          Read{" "}
-          <Link href="posts/first-post">First post</Link>
-        </h3>
-
+        <p>Fala, parça!</p>
       </section>
 
       <section className={`${utilStyles.headingMd} ${utilStyles.padding1px}`}>
@@ -65,7 +42,7 @@ export default function Home({ allPostsData, fact }) {
             </li>
           ))}
         </ul>
-        <p>Joke of the day:</p>
+        <h2 className={utilStyles.headingLg}>Fact of the day:</h2>
         <p>{fact.text}</p>
 
       </section>

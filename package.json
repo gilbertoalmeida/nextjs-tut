@@ -8,9 +8,12 @@
     "start": "next start"
   },
   "dependencies": {
+    "@ion-phaser/react": "^1.2.2",
     "date-fns": "^2.16.1",
     "gray-matter": "^4.0.2",
     "next": "^10.0.0",
+    "next-transpile-modules": "^6.0.0",
+    "phaser": "^3.50.0",
     "react": "16.13.1",
     "react-dom": "16.13.1",
     "remark": "^13.0.0",

@@ -23,11 +23,11 @@ export default function Home({ allPostsData, fact }) {
       <Head>
         <title>{siteTitle}</title>
       </Head>
-      <section className={utilStyles.headingMd}>
+      <section className={utilStyles.headingXl}>
         <p>Fala, parça!</p>
       </section>
 
-      <section className={`${utilStyles.headingMd} ${utilStyles.padding1px}`}>
+      <section className={`${utilStyles.section} ${utilStyles.headingMd} ${utilStyles.padding1px}`}>
         <h2 className={utilStyles.headingLg}>Blog</h2>
         <ul className={utilStyles.list}>
           {allPostsData.map(({ id, date, title }) => (
@@ -42,9 +42,19 @@ export default function Home({ allPostsData, fact }) {
             </li>
           ))}
         </ul>
-        <h2 className={utilStyles.headingLg}>Fact of the day:</h2>
-        <p>{fact.text}</p>
+      </section>
 
+      <section className={`${utilStyles.section} ${utilStyles.headingMd} ${utilStyles.padding1px}`}>
+        <h2 className={utilStyles.headingLg}>Games</h2>
+        <Link href={"/game"}>
+          <a>Phaser Game</a>
+        </Link>
+      </section>
+
+      <section className={`${utilStyles.section} ${utilStyles.headingMd} ${utilStyles.padding1px}`}>
+        <h2 className={utilStyles.headingLg}>API calls</h2>
+        <div>Fact of the day:</div>
+        <div>{fact.text}</div>
       </section>
     </Layout>
   )

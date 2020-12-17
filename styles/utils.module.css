@@ -43,10 +43,14 @@
   margin: 0;
 }
 
-.listItem {
+.listItem:not(:last-child) {
   margin: 0 0 1.25rem;
 }
 
 .lightText {
   color: #999;
+}
+
+.section {
+  margin: 25px 0px
 }

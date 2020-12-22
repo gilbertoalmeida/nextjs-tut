@@ -1,6 +1,7 @@
 import Layout from "../components/Layout"
 import React, { useState, useEffect } from 'react'
 import { preload, create, update } from "../Utils/gameFunctions"
+import Link from "next/link"
 
 
 export default function Game() {
@@ -41,8 +42,12 @@ export default function Game() {
 
   return (
     <Layout>
-      <div>Tutorial Game from https://phaser.io/</div>
-      <div id="canvas"></div>
+      <div>Tutorial Game from
+      {" "}
+        <Link href={"https://phaser.io/"}>
+          <a>Phaser.io</a>
+        </Link>
+      </div>
       {game}
     </Layout>
   )

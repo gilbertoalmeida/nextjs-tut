@@ -9,7 +9,8 @@ export default function Game() {
   useEffect(() => {
     if (typeof window !== 'undefined') {
       import('phaser').then(async Phaser => {
-        const { BootScene, GameScene } = await import("../Utils/Ship Game/BootScene")
+        const { BootScene } = await import("../Utils/Ship Game/BootScene")
+        const { GameScene } = await import("../Utils/Ship Game/GameScene")
 
         let canvas = document.getElementById("canvas")
 

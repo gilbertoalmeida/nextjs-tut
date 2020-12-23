@@ -46,6 +46,10 @@ export default function Home({ allPostsData, fact }) {
 
       <section className={`${utilStyles.section} ${utilStyles.headingMd} ${utilStyles.padding1px}`}>
         <h2 className={utilStyles.headingLg}>Games</h2>
+        <Link href={"/ship-game"}>
+          <a>Ship Game</a>
+        </Link>
+        <br />
         <Link href={"/game"}>
           <a>Phaser Game</a>
         </Link>

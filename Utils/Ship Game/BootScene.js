@@ -27,6 +27,18 @@ export class BootScene extends Phaser.Scene {
       frameWidth: 16,
       frameHeight: 16
     })
+
+    this.load.spritesheet("power-up", "Ship Game/spritesheets/power-up.png", {
+      frameWidth: 16,
+      frameHeight: 16
+    })
+
+    // this.load.spritesheet("bounce", "Ship Game/spritesheets/first-spritesheet-x2.png", {
+    //   frameWidth: 64,
+    //   frameHeight: 64
+    // })
+
+
   }
 
   create() {

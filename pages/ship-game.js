@@ -30,10 +30,17 @@ export default function Game() {
 
         let config = {
           type: canvas.getContext('webgl') ? Phaser.WEBGL : Phaser.CANVAS,
-          width: 256,
-          height: 272,
+          width: 512,
+          height: 544,
           canvas: canvas,
           context: myCustomContext,
+          pixelArt: true,
+          physics: {
+            default: "arcade",
+            arcade: {
+              debug: false
+            }
+          },
           scene: [BootScene, GameScene]
         }
 

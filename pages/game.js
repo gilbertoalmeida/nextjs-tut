@@ -1,6 +1,6 @@
 import Layout from "../components/Layout"
 import React, { useState, useEffect } from 'react'
-import { preload, create, update } from "../Utils/gameFunctions"
+// import { preload, create, update } from "../Utils/Phaser Game/gameFunctions"
 import Link from "next/link"
 
 
@@ -10,7 +10,9 @@ export default function Game() {
 
   useEffect(() => {
     if (typeof window !== 'undefined') {
-      import('phaser').then(Phaser => {
+      import('phaser').then(async Phaser => {
+        const { MainScene } = await import("../Utils/Phaser Game/MainScene")
+
         let gameState = {
           initialize: true,
           game: {
@@ -24,11 +26,7 @@ export default function Game() {
                 debug: false
               }
             },
-            scene: {
-              preload,
-              create,
-              update
-            },
+            scene: [MainScene]
           }
         }
 
@@ -48,6 +46,7 @@ export default function Game() {
           <a>Phaser.io</a>
         </Link>
       </div>
+      <div id="reactScore"></div>
       {game}
     </Layout>
   )

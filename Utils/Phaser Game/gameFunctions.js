@@ -9,11 +9,11 @@ var scoreText;
 
 
 export function preload() {
-  this.load.image('sky', '/sky.png');
-  this.load.image('ground', '/platform.png');
-  this.load.image('star', '/star.png');
-  this.load.image('bomb', '/bomb.png');
-  this.load.spritesheet('dude', '/dude.png', { frameWidth: 32, frameHeight: 48 });
+  this.load.image('sky', 'Phaser Game/sky.png');
+  this.load.image('ground', 'Phaser Game/platform.png');
+  this.load.image('star', 'Phaser Game/star.png');
+  this.load.image('bomb', 'Phaser Game/bomb.png');
+  this.load.spritesheet('dude', 'Phaser Game/dude.png', { frameWidth: 32, frameHeight: 48 });
 }
 
 export function create() {

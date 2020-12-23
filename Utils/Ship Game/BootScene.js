@@ -33,6 +33,11 @@ export class BootScene extends Phaser.Scene {
       frameHeight: 16
     })
 
+    this.load.spritesheet("player", "Ship Game/spritesheets/player.png", {
+      frameWidth: 16,
+      frameHeight: 24
+    })
+
     // this.load.spritesheet("bounce", "Ship Game/spritesheets/first-spritesheet-x2.png", {
     //   frameWidth: 64,
     //   frameHeight: 64
@@ -45,6 +50,72 @@ export class BootScene extends Phaser.Scene {
     this.background = this.add.image(0, 0, "background")
     this.background.setOrigin(0, 0)
     this.add.text(20, 20, "Loading game...", { font: "25px Arial", fill: "yellow" })
+
+
+    this.anims.create({
+      key: "ship1_anim",
+      frames: this.anims.generateFrameNumbers("ship1"), //this already gets the frame numbers from a spritesheet. It returns this Array [{key: "ship1", frame: 0}, {key: "ship1", frame: 1}]
+      frameRate: 20,
+      repeat: -1 //its how many times. And -1 is infinite
+    })
+
+    this.anims.create({
+      key: "ship2_anim",
+      frames: this.anims.generateFrameNumbers("ship2"),
+      frameRate: 20,
+      repeat: -1
+    })
+
+    this.anims.create({
+      key: "ship3_anim",
+      frames: this.anims.generateFrameNumbers("ship3"),
+      frameRate: 20,
+      repeat: -1
+    })
+
+    this.anims.create({
+      key: "red_anim",
+      frames: this.anims.generateFrameNumbers("power-up", {
+        start: 0,
+        end: 1
+      }),
+      frameRate: 20,
+      repeat: -1
+    })
+
+    this.anims.create({
+      key: "grey_anim",
+      frames: this.anims.generateFrameNumbers("power-up", {
+        start: 2,
+        end: 3
+      }),
+      frameRate: 20,
+      repeat: -1
+    })
+
+    this.anims.create({
+      key: "thrust_anim",
+      frames: this.anims.generateFrameNumbers("player"),
+      frameRate: 20,
+      repeat: -1
+    })
+
+    this.anims.create({
+      key: "explosion_anim",
+      frames: this.anims.generateFrameNumbers("explosion"),
+      frameRate: 20,
+      repeat: 0,
+      hideOnComplete: true
+    })
+
+    // this.anims.create({
+    //   key: "bounce_anim",
+    //   frames: this.anims.generateFrameNumbers("bounce"),
+    //   frameRate: 12,
+    //   repeat: -1
+    // })
+
+
     this.scene.start("playGame")
   }
 }

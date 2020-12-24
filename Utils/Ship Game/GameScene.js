@@ -158,7 +158,11 @@ export class GameScene extends Phaser.Scene {
 
     this.time.addEvent({
       delay: 1000,
-      callback: this.resetPlayer(),
+      callback: function () {
+        this.resetPlayer()
+        explosion1.destroy()
+        explosion2.destroy()
+      },
       callbackScope: this,
       loop: false
     })
@@ -184,11 +188,6 @@ export class GameScene extends Phaser.Scene {
       },
       callbackScope: this
     })
-
-    // console.log(this.children.list.length)
-    // console.log(this.children.list)
-
-
   }
 
   hitEnemy(projectile, enemy) {
@@ -198,6 +197,15 @@ export class GameScene extends Phaser.Scene {
     projectile.destroy()
     this.resetShipPos(enemy)
     this.updateScore(15)
+
+    this.time.addEvent({
+      delay: 1000,
+      callback: function () {
+        explosion.destroy()
+      },
+      callbackScope: this,
+      loop: false
+    })
   }
 
   moveShip(ship, speed) {

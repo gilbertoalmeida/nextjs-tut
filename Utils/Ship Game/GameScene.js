@@ -78,20 +78,49 @@ export class GameScene extends Phaser.Scene {
     this.ship3.setInteractive()
     // this.bounce.setInteractive()
 
-    //listen when an interactive object is clicked and fires the function with the this(scope of the callback)
-    this.input.on("gameobjectdown", this.destroyShip, this)
+    // //listen when an interactive object is clicked and fires the function with the this(scope of the callback)
+    // this.input.on("gameobjectdown", this.destroyShip, this)
 
     this.player = this.physics.add.sprite(this.config.width / 2 - 8, this.config.height - gameSettings.playerStartYOffset, "player")
     this.player.setScale(2)
     this.player.play("thrust_anim")
     this.player.setCollideWorldBounds(true)
 
+    this.projectiles = this.add.group()
+
     //creating variable to listen to keyboard events and process them
     this.cursorKeys = this.input.keyboard.createCursorKeys()
-
     this.spacebar = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE)
 
-    this.projectiles = this.add.group()
+    //creating touch controls
+    let shootingZoneWidth = 0.3 * this.config.width
+    let shootingZoneHeight = 0.25 * this.config.height
+    let shootingZoneXOffset = 0.7 * this.config.width
+    let shootingZoneYOffset = 0.75 * this.config.height
+
+    this.shootingZone = this.add.zone(shootingZoneXOffset, shootingZoneYOffset, shootingZoneWidth, shootingZoneHeight)
+    this.shootingZone.setOrigin(0, 0)
+
+    let shootingZoneVisual = this.add.graphics({ x: 0, y: 0 })
+    shootingZoneVisual.fillStyle("0x000000", 0.5)
+    shootingZoneVisual.fillRect(shootingZoneXOffset, shootingZoneYOffset, shootingZoneWidth, shootingZoneHeight)
+
+    this.shootingZone.setInteractive()
+    this.shootingZone.on("pointerdown", () => {
+      if (this.player.active) {
+        this.shootBeam()
+      }
+    }, this)
+    // this.shootingZone.on("pointerup", () => { console.log("up") }, this)
+    // this.shootingZone.on("pointerout", () => { console.log("out") }, this)
+
+    this.joyStick = this.plugins.get('rexvirtualjoystickplugin').add(this, {
+      x: 0.15 * this.config.width,
+      y: 0.85 * this.config.height,
+      radius: 0.075 * this.config.width,
+      base: this.add.circle(0, 0, 0.075 * this.config.width, "0xcccccc", 0.3),
+      thumb: this.add.circle(0, 0, 0.0375 * this.config.width, "0x000000", 0.5)
+    });
 
     this.physics.add.collider(this.powerUps, this.powerUps)
     this.physics.add.collider(this.projectiles, this.powerUps, function (projectile, powerUp) {
@@ -240,11 +269,11 @@ export class GameScene extends Phaser.Scene {
     ship.x = randomX
   }
 
-  //the pointer here is the mouse pointer and the gameObject is the ship that was clicked
-  destroyShip(pointer, gameObject) {
-    gameObject.setTexture("explosion") //switch its texture to the explosion spritesheet
-    gameObject.play("explosion_anim") //and play the animation for it
-  }
+  // //the pointer here is the mouse pointer and the gameObject is the ship that was clicked
+  // destroyShip(pointer, gameObject) {
+  //   gameObject.setTexture("explosion") //switch its texture to the explosion spritesheet
+  //   gameObject.play("explosion_anim") //and play the animation for it
+  // }
 
   movePlayerManager() {
 
@@ -263,6 +292,25 @@ export class GameScene extends Phaser.Scene {
       this.player.setVelocityY(gameSettings.playerSpeed)
     } else {
       this.player.setVelocityY(0)
+    }
+
+    if (this.joyStick.visible) {
+      //this.cursorKeys was created in create() to listen to keyboard input
+      if (this.joyStick.left) {
+        this.player.setVelocityX(-gameSettings.playerSpeed)
+      } else if (this.joyStick.right) {
+        this.player.setVelocityX(gameSettings.playerSpeed)
+      } else {
+        this.player.setVelocityX(0)
+      }
+
+      if (this.joyStick.up) {
+        this.player.setVelocityY(-gameSettings.playerSpeed)
+      } else if (this.joyStick.down) {
+        this.player.setVelocityY(gameSettings.playerSpeed)
+      } else {
+        this.player.setVelocityY(0)
+      }
     }
 
   }

@@ -50,6 +50,8 @@ export class BootScene extends Phaser.Scene {
     this.load.audio("audio_pickup", ["Ship Game/sounds/pickup.ogg", "Ship Game/sounds/pickup.mp3"])
     this.load.audio("bgmusic", ["Ship Game/sounds/sci-fi_platformer12.ogg", "Ship Game/sounds/sci-fi_platformer12.mp3"])
 
+    this.load.plugin('rexvirtualjoystickplugin', 'https://raw.githubusercontent.com/rexrainbow/phaser3-rex-notes/master/dist/rexvirtualjoystickplugin.min.js', true);
+
     // this.load.spritesheet("bounce", "Ship Game/spritesheets/first-spritesheet-x2.png", {
     //   frameWidth: 64,
     //   frameHeight: 64

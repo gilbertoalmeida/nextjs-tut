@@ -1,6 +1,7 @@
 import Phaser from "phaser"
 import gameSettings from "./gameSettings"
 import Beam from "./Beam"
+import Explosion from "./Explosion"
 
 export class GameScene extends Phaser.Scene {
   constructor() {
@@ -30,9 +31,9 @@ export class GameScene extends Phaser.Scene {
     // this.ship2.flipY = true
     // this.ship1.angle += 30
 
-    this.ship1 = this.add.sprite(this.config.width / 2 - 50, this.config.height / 2, "ship1")
-    this.ship2 = this.add.sprite(this.config.width / 2, this.config.height / 2, "ship2")
-    this.ship3 = this.add.sprite(this.config.width / 2 + 50, this.config.height / 2, "ship3")
+    this.ship1 = this.add.sprite(this.config.width / 2 - gameSettings.enemiesStartXOffset, gameSettings.enemiesStartYOffset, "ship1")
+    this.ship2 = this.add.sprite(this.config.width / 2, gameSettings.enemiesStartYOffset, "ship2")
+    this.ship3 = this.add.sprite(this.config.width / 2 + gameSettings.enemiesStartXOffset, gameSettings.enemiesStartYOffset, "ship3")
 
     this.ship1.setScale(2)
     this.ship2.setScale(2)
@@ -80,7 +81,7 @@ export class GameScene extends Phaser.Scene {
     //listen when an interactive object is clicked and fires the function with the this(scope of the callback)
     this.input.on("gameobjectdown", this.destroyShip, this)
 
-    this.player = this.physics.add.sprite(this.config.width / 2 - 8, this.config.height - 64, "player")
+    this.player = this.physics.add.sprite(this.config.width / 2 - 8, this.config.height - gameSettings.playerStartYOffset, "player")
     this.player.setScale(2)
     this.player.play("thrust_anim")
     this.player.setCollideWorldBounds(true)
@@ -121,6 +122,7 @@ export class GameScene extends Phaser.Scene {
 
   updateScore(pointsToCompute) {
     this.score += pointsToCompute
+    if (this.score < 0) this.score = 0
     this.scoreLabel.text = "SCORE " + this.zeroPad(this.score, 6)
   }
 
@@ -137,12 +139,62 @@ export class GameScene extends Phaser.Scene {
   }
 
   hurtPlayer(player, enemy) {
+
+    //after reseting, the alpha increases from 0 to prevent an immediate double kill. I decided on 0.8 because after this it already looks like it's 1
+    if (this.player.alpha < 0.8) {
+      return
+    }
+
+    let explosion2 = new Explosion(this, enemy.x, enemy.y)
+    let explosion1 = new Explosion(this, player.x, player.y)
+
     this.resetShipPos(enemy)
-    player.x = this.config.width / 2 - 8
-    player.y = this.config.height - 64
+
+
+    this.updateScore(-50)
+
+    player.disableBody(true, true)
+    //disablling the player sets its active property to false. This is being used as a flag for the shooting of beams for example
+
+    this.time.addEvent({
+      delay: 1000,
+      callback: this.resetPlayer(),
+      callbackScope: this,
+      loop: false
+    })
+  }
+
+  resetPlayer() {
+    let x = this.config.width / 2 - 8
+    let y = this.config.height
+    this.player.enableBody(true, x, y, true, true)
+
+    this.player.alpha = 0
+
+    //Is it ok to create a tween all the time here? this.children.list.length is not increased
+    let tween = this.tweens.add({
+      targets: this.player,
+      y: this.config.height - gameSettings.playerStartYOffset,
+      alpha: 1,
+      ease: "Power1",
+      duration: 1500,
+      repeat: 0,
+      onComplete: function () {
+        this.player.alpha = 1
+      },
+      callbackScope: this
+    })
+
+    // console.log(this.children.list.length)
+    // console.log(this.children.list)
+
+
   }
 
   hitEnemy(projectile, enemy) {
+
+    let explosion = new Explosion(this, enemy.x, enemy.y)
+
     projectile.destroy()
     this.resetShipPos(enemy)
     this.updateScore(15)
@@ -157,7 +209,7 @@ export class GameScene extends Phaser.Scene {
   }
 
   resetShipPos(ship) {
-    ship.y = -32
+    ship.y = gameSettings.enemiesStartYOffset
     let randomX = Phaser.Math.Between(0, this.config.width)
     ship.x = randomX
   }
@@ -207,7 +259,9 @@ export class GameScene extends Phaser.Scene {
 
     //JustDown is for firing only once per down.
     if (Phaser.Input.Keyboard.JustDown(this.spacebar)) {
-      this.shootBeam()
+      if (this.player.active) {
+        this.shootBeam()
+      }
     }
 
     //calling the update function of each Beam

@@ -38,6 +38,11 @@ export class BootScene extends Phaser.Scene {
       frameHeight: 24
     })
 
+    this.load.spritesheet("beam", "Ship Game/spritesheets/beam.png", {
+      frameWidth: 16,
+      frameHeight: 16
+    })
+
     // this.load.spritesheet("bounce", "Ship Game/spritesheets/first-spritesheet-x2.png", {
     //   frameWidth: 64,
     //   frameHeight: 64
@@ -96,6 +101,13 @@ export class BootScene extends Phaser.Scene {
     this.anims.create({
       key: "thrust_anim",
       frames: this.anims.generateFrameNumbers("player"),
+      frameRate: 20,
+      repeat: -1
+    })
+
+    this.anims.create({
+      key: "beam_anim",
+      frames: this.anims.generateFrameNumbers("beam"),
       frameRate: 20,
       repeat: -1
     })

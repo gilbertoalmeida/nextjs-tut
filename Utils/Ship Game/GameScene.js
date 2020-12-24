@@ -1,5 +1,6 @@
 import Phaser from "phaser"
 import gameSettings from "./gameSettings"
+import Beam from "./Beam"
 
 export class GameScene extends Phaser.Scene {
   constructor() {
@@ -90,6 +91,8 @@ export class GameScene extends Phaser.Scene {
 
     this.spacebar = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE)
 
+    this.projectiles = this.add.group()
+
     this.physics.add.collider(this.powerUps, this.powerUps)
     // this.physics.add.collider(this.powerUps, this.player)
 
@@ -138,6 +141,11 @@ export class GameScene extends Phaser.Scene {
 
   }
 
+  shootBeam() {
+    let beam = new Beam(this)
+    beam.setScale(2)
+  }
+
   update() {
 
     this.moveShip(this.ship1, -1)
@@ -151,7 +159,13 @@ export class GameScene extends Phaser.Scene {
 
     //JustDown is for firing only once per down.
     if (Phaser.Input.Keyboard.JustDown(this.spacebar)) {
-      console.log("chama na pressao!")
+      this.shootBeam()
+    }
+
+    //calling the update function of each Beam
+    for (let i = 0; i < this.projectiles.getChildren().length; i++) {
+      let beam = this.projectiles.getChildren()[i]
+      beam.update()
     }
 
     // const { config } = this.game

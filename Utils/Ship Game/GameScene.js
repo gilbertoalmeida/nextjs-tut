@@ -117,7 +117,22 @@ export class GameScene extends Phaser.Scene {
     this.score = 0
     this.scoreLabel = this.add.bitmapText(20, 10, "pixelFont", "SCORE " + this.zeroPad(this.score, 6), 32)
 
-    // this.add.text(20, 20, "Playing game...", { font: "25px Arial", fill: "yellow" })
+    this.beamSound = this.sound.add("audio_beam")
+    this.explosionSound = this.sound.add("audio_explosion")
+    this.pickupSound = this.sound.add("audio_pickup")
+
+    this.bgMusic = this.sound.add("bgmusic")
+    let musicConfig = {
+      mute: false,
+      volume: 1,
+      rate: 1,
+      detune: 0,
+      seek: 0,
+      loop: false,
+      delay: 0
+    }
+
+    this.bgMusic.play(musicConfig)
   }
 
   updateScore(pointsToCompute) {
@@ -136,6 +151,7 @@ export class GameScene extends Phaser.Scene {
 
   pickPowerUp(player, powerUp) {
     powerUp.disableBody(true, true)
+    this.pickupSound.play()
   }
 
   hurtPlayer(player, enemy) {
@@ -147,6 +163,7 @@ export class GameScene extends Phaser.Scene {
 
     let explosion2 = new Explosion(this, enemy.x, enemy.y)
     let explosion1 = new Explosion(this, player.x, player.y)
+    this.explosionSound.play()
 
     this.resetShipPos(enemy)
 
@@ -193,6 +210,7 @@ export class GameScene extends Phaser.Scene {
   hitEnemy(projectile, enemy) {
 
     let explosion = new Explosion(this, enemy.x, enemy.y)
+    this.explosionSound.play()
 
     projectile.destroy()
     this.resetShipPos(enemy)
@@ -251,7 +269,7 @@ export class GameScene extends Phaser.Scene {
 
   shootBeam() {
     let beam = new Beam(this)
-    beam.setScale(2)
+    this.beamSound.play()
   }
 
   update() {

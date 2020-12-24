@@ -45,6 +45,11 @@ export class BootScene extends Phaser.Scene {
 
     this.load.bitmapFont("pixelFont", "Ship Game/font/font.png", "Ship Game/font/font.xml")
 
+    this.load.audio("audio_beam", ["Ship Game/sounds/beam.ogg", "Ship Game/sounds/beam.mp3"])
+    this.load.audio("audio_explosion", ["Ship Game/sounds/explosion.ogg", "Ship Game/sounds/explosion.mp3"])
+    this.load.audio("audio_pickup", ["Ship Game/sounds/pickup.ogg", "Ship Game/sounds/pickup.mp3"])
+    this.load.audio("bgmusic", ["Ship Game/sounds/sci-fi_platformer12.ogg", "Ship Game/sounds/sci-fi_platformer12.mp3"])
+
     // this.load.spritesheet("bounce", "Ship Game/spritesheets/first-spritesheet-x2.png", {
     //   frameWidth: 64,
     //   frameHeight: 64

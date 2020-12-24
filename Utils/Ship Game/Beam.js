@@ -18,6 +18,7 @@ export default class Beam extends Phaser.GameObjects.Sprite {
     scene.projectiles.add(this)
 
     this.play("beam_anim")
+    this.setScale(2)
 
     //enablying the spritesheet to have physics
     scene.physics.world.enableBody(this)

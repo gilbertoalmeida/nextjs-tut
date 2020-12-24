@@ -39,11 +39,10 @@ export class GameScene extends Phaser.Scene {
     this.ship3.setScale(2)
     // this.bounce = this.add.sprite(this.config.width / 2, this.config.height * 0.75, "bounce")
 
-    this.ship1.flipY = true
-    this.ship2.flipY = true
-    this.ship3.flipY = true
-
-
+    this.enemies = this.physics.add.group()
+    this.enemies.add(this.ship1)
+    this.enemies.add(this.ship2)
+    this.enemies.add(this.ship3)
 
     this.powerUps = this.physics.add.group()
 
@@ -94,22 +93,71 @@ export class GameScene extends Phaser.Scene {
     this.projectiles = this.add.group()
 
     this.physics.add.collider(this.powerUps, this.powerUps)
-    // this.physics.add.collider(this.powerUps, this.player)
+    this.physics.add.collider(this.projectiles, this.powerUps, function (projectile, powerUp) {
+      projectile.destroy()
+    })
+    this.physics.add.overlap(this.player, this.powerUps, this.pickPowerUp, null, this)
+    this.physics.add.overlap(this.player, this.enemies, this.hurtPlayer, null, this)
+    this.physics.add.overlap(this.projectiles, this.enemies, this.hitEnemy, null, this)
 
 
-    this.add.text(20, 20, "Playing game...", { font: "25px Arial", fill: "yellow" })
+    //black brackground of the score
+    let graphics = this.add.graphics()
+    graphics.fillStyle(0x000000, 1)
+    graphics.beginPath()
+    graphics.moveTo(0, 0)
+    graphics.lineTo(this.config.width, 0)
+    graphics.lineTo(this.config.width, 40)
+    graphics.lineTo(0, 40)
+    graphics.lineTo(0, 0)
+    graphics.closePath()
+    graphics.fillPath()
+
+    this.score = 0
+    this.scoreLabel = this.add.bitmapText(20, 10, "pixelFont", "SCORE " + this.zeroPad(this.score, 6), 32)
+
+    // this.add.text(20, 20, "Playing game...", { font: "25px Arial", fill: "yellow" })
+  }
+
+  updateScore(pointsToCompute) {
+    this.score += pointsToCompute
+    this.scoreLabel.text = "SCORE " + this.zeroPad(this.score, 6)
+  }
+
+  zeroPad(number, size) {
+    let stringNumber = String(number)
+    while (stringNumber.length < (size || 2)) {
+      stringNumber = "0" + stringNumber
+    }
+    return stringNumber
+  }
+
+  pickPowerUp(player, powerUp) {
+    powerUp.disableBody(true, true)
+  }
+
+  hurtPlayer(player, enemy) {
+    this.resetShipPos(enemy)
+    player.x = this.config.width / 2 - 8
+    player.y = this.config.height - 64
+  }
+
+  hitEnemy(projectile, enemy) {
+    projectile.destroy()
+    this.resetShipPos(enemy)
+    this.updateScore(15)
   }
 
   moveShip(ship, speed) {
     ship.y += speed
 
-    if (ship.y < 0) {
+    if (ship.y > this.config.height + 32) {
       this.resetShipPos(ship)
     }
   }
 
   resetShipPos(ship) {
-    ship.y = this.config.height
+    ship.y = -32
     let randomX = Phaser.Math.Between(0, this.config.width)
     ship.x = randomX
   }
@@ -148,9 +196,9 @@ export class GameScene extends Phaser.Scene {
 
   update() {
 
-    this.moveShip(this.ship1, -1)
-    this.moveShip(this.ship2, -2)
-    this.moveShip(this.ship3, -3)
+    this.moveShip(this.ship1, 1.5)
+    this.moveShip(this.ship2, 2)
+    this.moveShip(this.ship3, 3)
 
     this.background.tilePositionY -= 0.5
 

@@ -26,7 +26,7 @@ export default class Beam extends Phaser.GameObjects.Sprite {
 
   //Objects updates are not run per default by Phaser for performance reasons. We need to call it for each object in the update of the Scene.
   update() {
-    if (this.y < 0) {
+    if (this.y < 48) {
       this.destroy()
     }
   }

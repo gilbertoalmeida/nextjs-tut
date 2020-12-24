@@ -43,6 +43,8 @@ export class BootScene extends Phaser.Scene {
       frameHeight: 16
     })
 
+    this.load.bitmapFont("pixelFont", "Ship Game/font/font.png", "Ship Game/font/font.xml")
+
     // this.load.spritesheet("bounce", "Ship Game/spritesheets/first-spritesheet-x2.png", {
     //   frameWidth: 64,
     //   frameHeight: 64

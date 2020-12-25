@@ -2,6 +2,7 @@ import Phaser from "phaser"
 import gameSettings from "./gameSettings"
 import Beam from "./Beam"
 import Explosion from "./Explosion"
+import isTouchDevice from "../isTouchDevice"
 
 export class GameScene extends Phaser.Scene {
   constructor() {
@@ -101,26 +102,38 @@ export class GameScene extends Phaser.Scene {
     this.shootingZone = this.add.zone(shootingZoneXOffset, shootingZoneYOffset, shootingZoneWidth, shootingZoneHeight)
     this.shootingZone.setOrigin(0, 0)
 
-    let shootingZoneVisual = this.add.graphics({ x: 0, y: 0 })
-    shootingZoneVisual.fillStyle("0x000000", 0.5)
-    shootingZoneVisual.fillRect(shootingZoneXOffset, shootingZoneYOffset, shootingZoneWidth, shootingZoneHeight)
+    // // just a debug visualization of where the Zone is
+    // let shootingZoneVisual = this.add.graphics({ x: 0, y: 0 })
+    // shootingZoneVisual.fillStyle("0x000000", 0.5)
+    // shootingZoneVisual.fillRect(shootingZoneXOffset, shootingZoneYOffset, shootingZoneWidth, shootingZoneHeight)
+
+    this.shootButton = this.add.sprite(shootingZoneXOffset + (shootingZoneWidth / 2), shootingZoneYOffset + (shootingZoneHeight / 2), "shootButton", 0)
+    this.shootButton.setScale(2)
 
     this.shootingZone.setInteractive()
     this.shootingZone.on("pointerdown", () => {
       if (this.player.active) {
         this.shootBeam()
+        this.shootButton.setFrame(1)
       }
     }, this)
-    // this.shootingZone.on("pointerup", () => { console.log("up") }, this)
-    // this.shootingZone.on("pointerout", () => { console.log("out") }, this)
+    this.shootingZone.on("pointerup", () => {
+      this.shootButton.setFrame(0)
+    }, this)
+    this.shootingZone.on("pointerout", () => {
+      this.shootButton.setFrame(0)
+    }, this)
 
     this.joyStick = this.plugins.get('rexvirtualjoystickplugin').add(this, {
-      x: 0.15 * this.config.width,
-      y: 0.85 * this.config.height,
-      radius: 0.075 * this.config.width,
-      base: this.add.circle(0, 0, 0.075 * this.config.width, "0xcccccc", 0.3),
-      thumb: this.add.circle(0, 0, 0.0375 * this.config.width, "0x000000", 0.5)
+      x: 0.2 * this.config.width,
+      y: 0.87 * this.config.height,
+      radius: 0.08 * this.config.width,
+      base: this.add.circle(0, 0, 0.1 * this.config.width, "0xd480b1", 0.4),
+      thumb: this.add.circle(0, 0, 0.05 * this.config.width, "0xd480b1", 1)
     });
+
+    if (!isTouchDevice()) this.hideTouchControls()
+    console.log("touch: ", isTouchDevice())
 
     this.physics.add.collider(this.powerUps, this.powerUps)
     this.physics.add.collider(this.projectiles, this.powerUps, function (projectile, powerUp) {
@@ -157,11 +170,17 @@ export class GameScene extends Phaser.Scene {
       rate: 1,
       detune: 0,
       seek: 0,
-      loop: false,
+      loop: true,
       delay: 0
     }
 
     this.bgMusic.play(musicConfig)
+  }
+
+  hideTouchControls() {
+    this.shootButton.setActive(false).setVisible(false)
+    this.shootingZone.disableInteractive()
+    this.joyStick.setVisible(false)
   }
 
   updateScore(pointsToCompute) {

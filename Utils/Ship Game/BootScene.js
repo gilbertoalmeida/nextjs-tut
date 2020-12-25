@@ -43,6 +43,11 @@ export class BootScene extends Phaser.Scene {
       frameHeight: 16
     })
 
+    this.load.spritesheet("shootButton", "Ship Game/spritesheets/shootButton.png", {
+      frameWidth: 32,
+      frameHeight: 32
+    })
+
     this.load.bitmapFont("pixelFont", "Ship Game/font/font.png", "Ship Game/font/font.xml")
 
     this.load.audio("audio_beam", ["Ship Game/sounds/beam.ogg", "Ship Game/sounds/beam.mp3"])

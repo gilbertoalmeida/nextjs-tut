@@ -45,6 +45,7 @@ export default function Game() {
         }
 
         var game = new Phaser.Game(config);
+        game.input.addPointer();
         setgameLoading(false)
       })
     }

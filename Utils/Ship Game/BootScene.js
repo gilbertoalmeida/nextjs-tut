@@ -43,12 +43,29 @@ export class BootScene extends Phaser.Scene {
       frameHeight: 16
     })
 
+    this.load.spritesheet("shootButton", "Ship Game/spritesheets/shootButton.png", {
+      frameWidth: 32,
+      frameHeight: 32
+    })
+
+    this.load.spritesheet("keyboardButton", "Ship Game/spritesheets/keyboardButton.png", {
+      frameWidth: 128,
+      frameHeight: 32
+    })
+
+    this.load.spritesheet("touchButton", "Ship Game/spritesheets/touchButton.png", {
+      frameWidth: 90,
+      frameHeight: 32
+    })
+
     this.load.bitmapFont("pixelFont", "Ship Game/font/font.png", "Ship Game/font/font.xml")
 
     this.load.audio("audio_beam", ["Ship Game/sounds/beam.ogg", "Ship Game/sounds/beam.mp3"])
     this.load.audio("audio_explosion", ["Ship Game/sounds/explosion.ogg", "Ship Game/sounds/explosion.mp3"])
     this.load.audio("audio_pickup", ["Ship Game/sounds/pickup.ogg", "Ship Game/sounds/pickup.mp3"])
     this.load.audio("bgmusic", ["Ship Game/sounds/sci-fi_platformer12.ogg", "Ship Game/sounds/sci-fi_platformer12.mp3"])
+
+    this.load.plugin('rexvirtualjoystickplugin', 'https://raw.githubusercontent.com/rexrainbow/phaser3-rex-notes/master/dist/rexvirtualjoystickplugin.min.js', true);
 
     // this.load.spritesheet("bounce", "Ship Game/spritesheets/first-spritesheet-x2.png", {
     //   frameWidth: 64,
@@ -61,6 +78,7 @@ export class BootScene extends Phaser.Scene {
   create() {
     this.background = this.add.image(0, 0, "background")
     this.background.setOrigin(0, 0)
+    this.background.setScale(2)
     this.add.text(20, 20, "Loading game...", { font: "25px Arial", fill: "yellow" })
 
 
@@ -133,7 +151,6 @@ export class BootScene extends Phaser.Scene {
     //   frameRate: 12,
     //   repeat: -1
     // })
-
 
     this.scene.start("playGame")
   }

@@ -1,6 +1,7 @@
 import Layout from "../components/Layout"
 import React, { useState, useEffect } from 'react'
 import Link from 'next/link'
+import styles from '../components/layout.module.css'
 
 export default function Game() {
 
@@ -53,14 +54,14 @@ export default function Game() {
   }, [])
 
   return (
-    <Layout>
+    <div className={styles.container}>
+      {gameLoading ? <div>loading...</div> : null}
+      <canvas id="canvas" style={{ margin: "20px auto", display: "block" }}></canvas>
       <div>Tutorial Game from{" "}
         <Link href={"https://www.youtube.com/watch?v=gFXx7lgxK9A&list=PLDyH9Tk5ZdFzEu_izyqgPFtHJJXkc79no&index=2"}>
           <a>Luis Zuno</a>
         </Link>
       </div>
-      {gameLoading ? <div>loading...</div> : null}
-      <canvas id="canvas" style={{ margin: "20px auto", display: "block" }}></canvas>
-    </Layout>
+    </div >
   )
 }

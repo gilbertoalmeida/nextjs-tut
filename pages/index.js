@@ -28,7 +28,24 @@ export default function Home({ allPostsData, fact }) {
       </section>
 
       <section className={`${utilStyles.section} ${utilStyles.headingMd} ${utilStyles.padding1px}`}>
-        <h2 className={utilStyles.headingLg}>Blog</h2>
+        <h2 className={utilStyles.headingLg}>Games</h2>
+        <Link href={"/ship-game"}>
+          <a>Ship Game</a>
+        </Link>
+        <br />
+        <Link href={"/game"}>
+          <a>Phaser Game</a>
+        </Link>
+      </section>
+
+      <section className={`${utilStyles.section} ${utilStyles.headingMd} ${utilStyles.padding1px}`}>
+        <h2 className={utilStyles.headingLg}>API calls</h2>
+        <div>New fact of every reload:</div>
+        <div>{fact.text}</div>
+      </section>
+
+      <section className={`${utilStyles.section} ${utilStyles.headingMd} ${utilStyles.padding1px}`}>
+        <h2 className={utilStyles.headingLg}>Nextjs Blog</h2>
         <ul className={utilStyles.list}>
           {allPostsData.map(({ id, date, title }) => (
             <li className={utilStyles.listItem} key={id}>
@@ -42,23 +59,6 @@ export default function Home({ allPostsData, fact }) {
             </li>
           ))}
         </ul>
-      </section>
-
-      <section className={`${utilStyles.section} ${utilStyles.headingMd} ${utilStyles.padding1px}`}>
-        <h2 className={utilStyles.headingLg}>Games</h2>
-        <Link href={"/ship-game"}>
-          <a>Ship Game</a>
-        </Link>
-        <br />
-        <Link href={"/game"}>
-          <a>Phaser Game</a>
-        </Link>
-      </section>
-
-      <section className={`${utilStyles.section} ${utilStyles.headingMd} ${utilStyles.padding1px}`}>
-        <h2 className={utilStyles.headingLg}>API calls</h2>
-        <div>Fact of the day:</div>
-        <div>{fact.text}</div>
       </section>
     </Layout>
   )

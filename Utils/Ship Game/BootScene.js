@@ -48,6 +48,16 @@ export class BootScene extends Phaser.Scene {
       frameHeight: 32
     })
 
+    this.load.spritesheet("keyboardButton", "Ship Game/spritesheets/keyboardButton.png", {
+      frameWidth: 128,
+      frameHeight: 32
+    })
+
+    this.load.spritesheet("touchButton", "Ship Game/spritesheets/touchButton.png", {
+      frameWidth: 90,
+      frameHeight: 32
+    })
+
     this.load.bitmapFont("pixelFont", "Ship Game/font/font.png", "Ship Game/font/font.xml")
 
     this.load.audio("audio_beam", ["Ship Game/sounds/beam.ogg", "Ship Game/sounds/beam.mp3"])
@@ -68,6 +78,7 @@ export class BootScene extends Phaser.Scene {
   create() {
     this.background = this.add.image(0, 0, "background")
     this.background.setOrigin(0, 0)
+    this.background.setScale(2)
     this.add.text(20, 20, "Loading game...", { font: "25px Arial", fill: "yellow" })
 
 
@@ -140,7 +151,6 @@ export class BootScene extends Phaser.Scene {
     //   frameRate: 12,
     //   repeat: -1
     // })
-
 
     this.scene.start("playGame")
   }

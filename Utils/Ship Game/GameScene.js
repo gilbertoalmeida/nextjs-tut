@@ -2,6 +2,7 @@ import Phaser from "phaser"
 import gameSettings from "./gameSettings"
 import Beam from "./Beam"
 import Explosion from "./Explosion"
+import SpriteButton from "./SpriteButton"
 import isTouchDevice from "../isTouchDevice"
 
 export class GameScene extends Phaser.Scene {
@@ -132,9 +133,6 @@ export class GameScene extends Phaser.Scene {
       thumb: this.add.circle(0, 0, 0.05 * this.config.width, "0xd480b1", 1)
     });
 
-    if (!isTouchDevice()) this.hideTouchControls()
-    console.log("touch: ", isTouchDevice())
-
     this.physics.add.collider(this.powerUps, this.powerUps)
     this.physics.add.collider(this.projectiles, this.powerUps, function (projectile, powerUp) {
       projectile.destroy()
@@ -159,6 +157,14 @@ export class GameScene extends Phaser.Scene {
     this.score = 0
     this.scoreLabel = this.add.bitmapText(20, 10, "pixelFont", "SCORE " + this.zeroPad(this.score, 6), 32)
 
+    this.keyboardButton = new SpriteButton(this, this.config.width / 2, 4, "keyboardButton", 0, 1)
+    this.touchButton = new SpriteButton(this, this.config.width / 2 + 138, 4, "touchButton", 0, 1)
+
+    this.keyboardButton.on("pointerdown", this.hideTouchControls, this)
+    this.touchButton.on("pointerdown", this.showTouchControls, this)
+
+
+
     this.beamSound = this.sound.add("audio_beam")
     this.explosionSound = this.sound.add("audio_explosion")
     this.pickupSound = this.sound.add("audio_pickup")
@@ -175,12 +181,25 @@ export class GameScene extends Phaser.Scene {
     }
 
     this.bgMusic.play(musicConfig)
+
+    if (!isTouchDevice()) this.hideTouchControls()
+    else this.showTouchControls()
   }
 
   hideTouchControls() {
     this.shootButton.setActive(false).setVisible(false)
     this.shootingZone.disableInteractive()
     this.joyStick.setVisible(false)
+    this.keyboardButton.setFrame(this.keyboardButton.downFrame)
+    this.touchButton.setFrame(this.touchButton.upFrame)
+  }
+
+  showTouchControls() {
+    this.shootButton.setActive(true).setVisible(true)
+    this.shootingZone.setInteractive()
+    this.joyStick.setVisible(true)
+    this.keyboardButton.setFrame(this.keyboardButton.upFrame)
+    this.touchButton.setFrame(this.touchButton.downFrame)
   }
 
   updateScore(pointsToCompute) {

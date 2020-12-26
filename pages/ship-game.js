@@ -1,4 +1,3 @@
-import Layout from "../components/Layout"
 import React, { useState, useEffect } from 'react'
 import Link from 'next/link'
 import styles from '../components/layout.module.css'

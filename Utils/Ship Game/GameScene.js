@@ -7,15 +7,14 @@ import isTouchDevice from "../isTouchDevice"
 
 export class GameScene extends Phaser.Scene {
   constructor() {
-    super({ key: "playGame" })
+    super({ key: "gameScene" })
     // this.velocity3 = 3
     this.config
   }
 
-  preload() {
+  init() {
     this.config = this.game.config
   }
-
 
   create() {
 
@@ -303,7 +302,7 @@ export class GameScene extends Phaser.Scene {
 
   resetShipPos(ship) {
     ship.y = gameSettings.enemiesStartYOffset
-    let randomX = Phaser.Math.Between(0, this.config.width)
+    let randomX = Phaser.Math.Between(32, this.config.width - 32)
     ship.x = randomX
   }
 

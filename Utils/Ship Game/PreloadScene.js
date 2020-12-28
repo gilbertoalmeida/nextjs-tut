@@ -82,7 +82,7 @@ export class PreloadScene extends Phaser.Scene {
 
     this.anims.create({
       key: "ship1_anim",
-      frames: this.anims.generateFrameNumbers("ship1"), //this already gets the frame numbers from a spritesheet. It returns this Array [{key: "ship1", frame: 0}, {key: "ship1", frame: 1}]
+      frames: this.anims.generateFrameNumbers("ship1"), //this already gets the frame numbers from a spritesheet. It returns this Array [{key: "ship1", frame: 0}, {key: "ship1", frame: 1}]. You can pass a config second argument like { keys: [0, 1, 0, 2] } if you want a specific order
       frameRate: 20,
       repeat: -1 //its how many times. And -1 is infinite
     })

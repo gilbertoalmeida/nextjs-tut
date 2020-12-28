@@ -18,7 +18,7 @@ export default function Game() {
           physics: {
             default: "matter",
             matter: {
-              debug: true,
+              // debug: true,
               gravity: false,
               setBounds: true
             }
@@ -57,7 +57,7 @@ export default function Game() {
 
 
           // this.sun = this.physics.add.sprite(this.config.width / 2, this.config.height / 4, 'sun');
-          this.sun = this.matter.add.sprite(this.config.width / 2, this.config.height / 4, 'sun');
+          this.sun = this.matter.add.sprite(this.config.width / 2, 120, 'sun');
           this.sun.setFrame(4)
           // this.sun.setCircle(6);
           this.sun.setScale(2)
@@ -71,8 +71,8 @@ export default function Game() {
           this.sunMag = 0
 
 
-          this.sun2 = this.matter.add.sprite(this.config.width / 2, this.config.height / 4 + 200, 'sun');
-          this.sun2.setFrame(2)
+          this.sun2 = this.matter.add.sprite(this.config.width / 2, 320, 'sun');
+          this.sun2.setFrame(4)
           // this.sun2.setCircle(8);
           this.sun2.setScale(2)
           this.sun2.setBody("circle", {
@@ -82,11 +82,23 @@ export default function Game() {
           })
           this.sun2.setInteractive()
 
-          this.sunMag2 = -0.04
+          this.sunMag2 = 0
+
+          this.sun3 = this.matter.add.sprite(this.config.width / 2, 520, 'sun');
+          this.sun3.setFrame(2)
+          // this.sun3.setCircle(8);
+          this.sun3.setScale(2)
+          this.sun3.setBody("circle", {
+            density: 1,
+            isStatic: true,
+            circleRadius: 13
+          })
+          this.sun3.setInteractive()
+
+          this.sunMag3 = -0.04
 
 
-
-          this.planet = this.matter.add.sprite(this.config.width / 2, this.config.height / 4 + 100, 'planet');
+          this.planet = this.matter.add.sprite(this.config.width / 2, 420, 'planet');
           // this.planet.setCircle(8);
           // this.planet.setFriction(0, 0, 0) //air friction and friction on the walls
           // this.planet.setBounce(1)
@@ -128,26 +140,41 @@ export default function Game() {
               this.sun.setFrame(4)
               // this.sunMag2 = -0.04
               // this.sun2.setFrame(2)
-            } else {
+            } else if (object === this.sun2) {
               this.sunMag2 = 0
               this.sun2.setFrame(4)
+              // this.sunMag = -0.04
+              // this.sun.setFrame(2)
+            } else if (object === this.sun3) {
+              this.sunMag3 = 0
+              this.sun3.setFrame(4)
               // this.sunMag = -0.04
               // this.sun.setFrame(2)
             }
           } else {
             //enable gravity
-            object.setFrame(2)
 
             if (object === this.sun) {
               this.sunMag = -0.04
               this.sun.setFrame(2)
               this.sunMag2 = 0
               this.sun2.setFrame(4)
-            } else {
+              this.sunMag3 = 0
+              this.sun3.setFrame(4)
+            } else if (object === this.sun2) {
               this.sunMag2 = -0.04
               this.sun2.setFrame(2)
               this.sunMag = 0
               this.sun.setFrame(4)
+              this.sunMag3 = 0
+              this.sun3.setFrame(4)
+            } else if (object === this.sun3) {
+              this.sunMag3 = -0.04
+              this.sun3.setFrame(2)
+              this.sunMag = 0
+              this.sun.setFrame(4)
+              this.sunMag2 = 0
+              this.sun2.setFrame(4)
             }
           }
           // this.objectToAttract?.setFrame(4)
@@ -160,7 +187,8 @@ export default function Game() {
 
           const force = new Phaser.Math.Vector2(this.planet.body.position.x - this.sun.body.position.x, this.planet.body.position.y - this.sun.body.position.y).normalize().setLength(this.sunMag)
           const force2 = new Phaser.Math.Vector2(this.planet.body.position.x - this.sun2.body.position.x, this.planet.body.position.y - this.sun2.body.position.y).normalize().setLength(this.sunMag2)
-          const resforce = force.add(force2)
+          const force3 = new Phaser.Math.Vector2(this.planet.body.position.x - this.sun3.body.position.x, this.planet.body.position.y - this.sun3.body.position.y).normalize().setLength(this.sunMag3)
+          const resforce = force.add(force2).add(force3)
           this.planet.applyForce(resforce)
 
           // if (this.objectToAttract) {
@@ -213,7 +241,7 @@ export default function Game() {
 
           #page, #loading {
             overflow: hidden;
-            background-color: grey;
+            background-color: black;
             color: white;
             height: 100vh;
             display: flex;

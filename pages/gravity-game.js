@@ -8,6 +8,8 @@ export default function Game() {
   useEffect(() => {
     if (typeof window !== 'undefined') {
       import('phaser').then(async Phaser => {
+        const { Star } = await import("../Utils/Gravity Game/Star")
+        const { Planet } = await import("../Utils/Gravity Game/Planet")
 
         let config = {
           type: Phaser.AUTO,
@@ -18,7 +20,7 @@ export default function Game() {
           physics: {
             default: "matter",
             matter: {
-              // debug: true,
+              debug: true,
               gravity: false,
               setBounds: true
             }
@@ -55,166 +57,66 @@ export default function Game() {
 
         function create() {
 
+          this.stars = new Phaser.GameObjects.Group(this)
 
-          // this.sun = this.physics.add.sprite(this.config.width / 2, this.config.height / 4, 'sun');
-          this.sun = this.matter.add.sprite(this.config.width / 2, 120, 'sun');
-          this.sun.setFrame(4)
-          // this.sun.setCircle(6);
-          this.sun.setScale(2)
-          this.sun.setBody("circle", {
-            density: 1,
-            isStatic: true,
-            circleRadius: 13
-          })
-          this.sun.setInteractive()
+          this.sun = new Star(this.matter.world, this.config.width / 2, 120, 4)
+          this.sun2 = new Star(this.matter.world, this.config.width / 2, 320, 4)
+          this.sun3 = new Star(this.matter.world, this.config.width / 2, 520, 2)
 
-          this.sunMag = 0
+          this.stars.add(this.sun)
+          this.stars.add(this.sun2)
+          this.stars.add(this.sun3)
 
+          this.sun3.gravityMag = -0.04
 
-          this.sun2 = this.matter.add.sprite(this.config.width / 2, 320, 'sun');
-          this.sun2.setFrame(4)
-          // this.sun2.setCircle(8);
-          this.sun2.setScale(2)
-          this.sun2.setBody("circle", {
-            density: 1,
-            isStatic: true,
-            circleRadius: 13
-          })
-          this.sun2.setInteractive()
+          this.planet = new Planet(this.matter.world, this.config.width / 2, 420, 1);
 
-          this.sunMag2 = 0
+          console.log(this.planet)
 
-          this.sun3 = this.matter.add.sprite(this.config.width / 2, 520, 'sun');
-          this.sun3.setFrame(2)
-          // this.sun3.setCircle(8);
-          this.sun3.setScale(2)
-          this.sun3.setBody("circle", {
-            density: 1,
-            isStatic: true,
-            circleRadius: 13
-          })
-          this.sun3.setInteractive()
-
-          this.sunMag3 = -0.04
-
-
-          this.planet = this.matter.add.sprite(this.config.width / 2, 420, 'planet');
-          // this.planet.setCircle(8);
-          // this.planet.setFriction(0, 0, 0) //air friction and friction on the walls
-          // this.planet.setBounce(1)
-          this.planet.setBody("circle", {
-            density: 1,
-            friction: 0,
-            frictionStatic: 0,
-            frictionAir: 0,
-            restitution: 1
-          })
-
-          const planetBody = this.planet.body
-          this.matter.body.setInertia(planetBody, Infinity)
-
-
-
-          // this.planet.setCollideWorldBounds(true);
-
-          // this.planet.body.velocity.x = 100;
           this.planet.setVelocity(2, 0);
 
-          // this.physics.add.collider(this.sun, this.planet);
-
           this.cursors = this.input.keyboard.createCursorKeys();
-
-          // this.accText = this.add.text(20, 20, "acceleration: 0")
-          // this.velText = this.add.text(20, 60, "velocity: 0")
-          // this.distText = this.add.text(20, 60, "distance: 0")
 
           this.input.on("gameobjectdown", toggleGravity, this)
         }
 
         function toggleGravity(pointer, object) {
+          let starsArray = this.stars.getChildren()
+
           if (object.frame.name === 2) {
             //disable gravity
 
-            if (object === this.sun) {
-              this.sunMag = 0
-              this.sun.setFrame(4)
-              // this.sunMag2 = -0.04
-              // this.sun2.setFrame(2)
-            } else if (object === this.sun2) {
-              this.sunMag2 = 0
-              this.sun2.setFrame(4)
-              // this.sunMag = -0.04
-              // this.sun.setFrame(2)
-            } else if (object === this.sun3) {
-              this.sunMag3 = 0
-              this.sun3.setFrame(4)
-              // this.sunMag = -0.04
-              // this.sun.setFrame(2)
-            }
+            starsArray.forEach(star => {
+              if (star === object) {
+                star.gravityMag = 0
+                star.setFrame(4)
+              }
+            })
           } else {
             //enable gravity
 
-            if (object === this.sun) {
-              this.sunMag = -0.04
-              this.sun.setFrame(2)
-              this.sunMag2 = 0
-              this.sun2.setFrame(4)
-              this.sunMag3 = 0
-              this.sun3.setFrame(4)
-            } else if (object === this.sun2) {
-              this.sunMag2 = -0.04
-              this.sun2.setFrame(2)
-              this.sunMag = 0
-              this.sun.setFrame(4)
-              this.sunMag3 = 0
-              this.sun3.setFrame(4)
-            } else if (object === this.sun3) {
-              this.sunMag3 = -0.04
-              this.sun3.setFrame(2)
-              this.sunMag = 0
-              this.sun.setFrame(4)
-              this.sunMag2 = 0
-              this.sun2.setFrame(4)
-            }
+            starsArray.forEach(star => {
+              if (star === object) {
+                star.gravityMag = -0.04
+                star.setFrame(2)
+              } else {
+                star.gravityMag = 0
+                star.setFrame(4)
+              }
+            })
           }
-          // this.objectToAttract?.setFrame(4)
-          // this.objectToAttract = object
-          // object.setFrame(2)
         }
 
         function update() {
+          let starsArray = this.stars.getChildren()
+          let allGravityForces = new Phaser.Math.Vector2(0, 0)
 
+          starsArray.forEach(star => {
+            let gravityForce = new Phaser.Math.Vector2(this.planet.body.position.x - star.body.position.x, this.planet.body.position.y - star.body.position.y).normalize().setLength(star.gravityMag)
+            allGravityForces.add(gravityForce)
+          })
 
-          const force = new Phaser.Math.Vector2(this.planet.body.position.x - this.sun.body.position.x, this.planet.body.position.y - this.sun.body.position.y).normalize().setLength(this.sunMag)
-          const force2 = new Phaser.Math.Vector2(this.planet.body.position.x - this.sun2.body.position.x, this.planet.body.position.y - this.sun2.body.position.y).normalize().setLength(this.sunMag2)
-          const force3 = new Phaser.Math.Vector2(this.planet.body.position.x - this.sun3.body.position.x, this.planet.body.position.y - this.sun3.body.position.y).normalize().setLength(this.sunMag3)
-          const resforce = force.add(force2).add(force3)
-          this.planet.applyForce(resforce)
-
-          // if (this.objectToAttract) {
-          //   //this.physics.accelerateTo(this.planet, 200, 150)
-          //   this.physics.accelerateToObject(this.planet, this.objectToAttract, 10000 / (this.config.height / 4));
-          // }
-
-          // if (this.cursors.up.isDown) {
-          //   //this.physics.accelerateTo(this.planet, 200, 150)
-          //   // this.physics.accelerateToObject(this.planet, this.sun, -60, 300, 300);
-          //   this.physics.accelerateToObject(this.planet, this.sun2, 10000 / 60);
-
-          // }
-
-          if (this.cursors.down.isDown) {
-            console.log(this.planet.body)
-          }
-
-
-          // this.distText.text = "distance: " + Phaser.Math.Distance.Between(this.sun.x, this.sun.y, this.planet.x, this.planet.y)
-
-          // // Calculate gravity as the normalised vector from the ship to the planet
-          // this.planet.body.gravity = new Phaser.Math.Vector2(this.sun.body.x - this.planet.body.x, this.sun.body.y - this.planet.body.y);
-          // // Normalize and multiply by actual strength of gravity desired
-          //  this.planet.body.gravity = this.planet.body.gravity.normalize().multiply(300, 300);
-
+          this.planet.applyForce(allGravityForces)
         }
       })
     }

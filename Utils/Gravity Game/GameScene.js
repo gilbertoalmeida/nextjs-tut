@@ -1,6 +1,7 @@
 import Phaser from "phaser"
 import { Star } from "./Star"
 import { Planet } from "./Planet"
+import { Portal } from "./Portal"
 
 export class GameScene extends Phaser.Scene {
   constructor() {
@@ -32,26 +33,13 @@ export class GameScene extends Phaser.Scene {
 
     this.planet.setVelocity(2, 0);
 
-    this.portal = new Phaser.Physics.Matter.Sprite(this.matter.world, 100, 50, "portal", 0, {
-      density: 1,
-      isSensor: true,
-      onCollideCallback: this.reachedPortal,
-      // isStatic: true,
-      chamfer: {
-        radius: 32
-      }
-    })
-
-    this.add.existing(this.portal)
-
-    this.portal.play("portal_anim")
+    this.portal = new Portal(this.matter.world, 100, 50)
 
 
     this.cursors = this.input.keyboard.createCursorKeys();
 
     this.input.on("gameobjectdown", this.toggleGravity, this)
   }
-
 
   reachedPortal(pair) {
     console.log("level completed")

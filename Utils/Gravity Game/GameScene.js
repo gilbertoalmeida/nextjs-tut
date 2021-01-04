@@ -29,12 +29,11 @@ export class GameScene extends Phaser.Scene {
 
     this.sun3.gravityMag = -0.04
 
+    this.portal = new Portal(this.matter.world, 100, 50)
+
     this.planet = new Planet(this.matter.world, this.config.width / 2, 420, 0);
 
     this.planet.setVelocity(2, 0);
-
-    this.portal = new Portal(this.matter.world, 100, 50)
-
 
     this.cursors = this.input.keyboard.createCursorKeys();
 
@@ -44,25 +43,23 @@ export class GameScene extends Phaser.Scene {
   reachedPortal(pair) {
     console.log("level completed")
 
-    // const planet = pair.bodyA.gameObject
-    // planet.setVelocity(0, 0);
+    this.planet.setVelocity(0, 0);
 
-
-    // let x = 100
-    // let y = 50
-
-    // let tween = this.tweens.add({
-    //   targets: planet,
-    //   y,
-    //   x,
-    //   ease: "Power1",
-    //   duration: 5000,
-    //   repeat: 0,
-    //   onComplete: function () {
-    //     console.log("acabou")
-    //   },
-    //   callbackScope: this
-    // })
+    let tween = this.tweens.add({
+      targets: this.planet,
+      y: this.portal.y - 5,
+      x: this.portal.x,
+      scale: 0.1,
+      alpha: 0.7,
+      ease: "Power1",
+      duration: 3000,
+      repeat: 0,
+      onComplete: function () {
+        this.planet.alpha = 0
+        console.log("acabou")
+      },
+      callbackScope: this
+    })
   }
 
   toggleGravity(pointer, object) {

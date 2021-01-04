@@ -28,6 +28,16 @@ export class PreloadScene extends Phaser.Scene {
       frameHeight: 24
     })
 
+    this.load.spritesheet("touchicon", "Gravity Game/touchicon.png", {
+      frameWidth: 22,
+      frameHeight: 32
+    })
+
+    this.load.spritesheet("sensorline", "Gravity Game/sensorline.png", {
+      frameWidth: 10,
+      frameHeight: 2
+    })
+
   }
 
   create() {

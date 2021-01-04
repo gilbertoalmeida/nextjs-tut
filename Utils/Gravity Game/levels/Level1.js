@@ -2,6 +2,8 @@ import Phaser from "phaser"
 import { Star } from "../Star"
 import { Planet } from "../Planet"
 import { Portal } from "../Portal"
+import { Touch } from "../Touch"
+import { Sensor } from "../Sensor"
 import { Text } from "../Text"
 
 export class Level1 extends Phaser.Scene {
@@ -15,17 +17,13 @@ export class Level1 extends Phaser.Scene {
     this.scenePlugin = new Phaser.Scenes.ScenePlugin(this)
 
     this.allowGravity = true
+    this.turnCount = 0
   }
 
   create() {
     this.background = this.add.tileSprite(0, 0, this.config.width, this.config.height, "spacebg")
     this.background.setOrigin(0, 0)
 
-    this.buildGameObjects()
-    this.throwIntroText()
-  }
-
-  buildGameObjects() {
     this.stars = new Phaser.GameObjects.Group(this)
 
     this.sun = new Star(this.matter.world, this.config.width / 2, 520, 0)
@@ -39,6 +37,21 @@ export class Level1 extends Phaser.Scene {
     this.planet = new Planet(this.matter.world, this.config.width / 2, 420, 0);
 
     this.planet.setVelocity(2, 0);
+
+    this.sensor = new Sensor(this.matter.world, 90, 494)
+
+    this.throwIntroText()
+  }
+
+  pauseScene() {
+    this.turnCount++
+
+    if (this.turnCount === 3) {
+      this.scenePlugin.pause()
+      this.scene.launch('level1tutorial', {
+        mainScene: this
+      });
+    }
   }
 
   throwIntroText() {
@@ -75,18 +88,6 @@ export class Level1 extends Phaser.Scene {
       callbackScope: this,
       loop: false
     })
-
-    this.time.addEvent({
-      delay: 11460,
-      callback: function () {
-        this.scenePlugin.pause()
-        this.scene.launch('level1tutorial', {
-          mainScene: this
-        });
-      },
-      callbackScope: this,
-      loop: false
-    })
   }
 
   throwOffYouGoText() {
@@ -104,22 +105,19 @@ export class Level1 extends Phaser.Scene {
   }
 
   reachedPortal(pair) {
-    console.log("level completed")
-
     this.planet.setVelocity(0, 0);
 
-    let tween = this.tweens.add({
+    this.tweens.add({
       targets: this.planet,
       y: this.portal.y - 5,
       x: this.portal.x,
       scale: 0.1,
       alpha: 0.7,
-      ease: "Power1",
-      duration: 3000,
+      ease: "Power0",
+      duration: 1500,
       repeat: 0,
       onComplete: function () {
         this.planet.alpha = 0
-        console.log("acabou")
       },
       callbackScope: this
     })
@@ -161,22 +159,23 @@ export class Level1Tutorial extends Phaser.Scene {
     let interactiveZoneX = this.mainScene.sun.x
     let interactiveZoneY = this.mainScene.sun.y
 
-    this.interactiveZone = this.add.zone(interactiveZoneX, interactiveZoneY, interactiveZoneWidth, interactiveZoneHeight)
-    this.interactiveZone.setOrigin(0.5, 0.5)
-
     this.clickText = new Text(this, interactiveZoneX + 100, interactiveZoneY, "Touch the\nstar", 24)
     this.clickText.setCenterAlign()
+
+    this.touchIcon = new Touch(this.matter.world, this.mainScene.sun.x + 35, this.mainScene.sun.y, - Math.PI / 2)
+
+    this.interactiveZone = this.add.zone(interactiveZoneX, interactiveZoneY, interactiveZoneWidth, interactiveZoneHeight)
+    this.interactiveZone.setOrigin(0.5, 0.5)
 
     this.interactiveZone.setInteractive()
     this.interactiveZone.on("pointerdown", () => {
       this.clickText.destroy()
+      this.touchIcon.destroy()
       this.mainScene.introText2.destroy()
       this.mainScenePlugin.resume()
       this.mainScene.allowGravity = false
       this.mainScene.sun.setFrame(1)
       this.mainScene.throwOffYouGoText()
     }, this)
-
-
   }
 }

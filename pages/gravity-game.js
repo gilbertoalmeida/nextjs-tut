@@ -55,6 +55,7 @@ export default function Game() {
         {`
         #loading {
           width: 100vw;
+          justify-content: center;
         }
 
           #page, #loading {
@@ -64,7 +65,6 @@ export default function Game() {
             height: 100vh;
             display: flex;
             flex-direction: column;
-            justify-content: center;
             align-items: center;
           }
 

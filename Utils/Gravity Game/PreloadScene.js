@@ -1,4 +1,5 @@
 import Phaser from "phaser"
+import { Text } from "./Text"
 
 export class PreloadScene extends Phaser.Scene {
   constructor() {
@@ -38,7 +39,7 @@ export class PreloadScene extends Phaser.Scene {
       repeat: -1 //its how many times. And -1 is infinite
     })
 
-    this.scene.start("gameScene")
+    this.scene.start("level1")
   }
 
   createLoadingBar() {
@@ -46,8 +47,7 @@ export class PreloadScene extends Phaser.Scene {
     this.background = this.add.image(0, 0, "spacebg")
     this.background.setOrigin(0, 0)
 
-    this.loadingText = this.add.bitmapText(this.config.width / 2, this.config.height / 1.6, "pixelFont", "Loading assets - 0%", 32)
-    this.loadingText.setOrigin(0.5, 0.5)
+    this.loadingText = new Text(this, this.config.width / 2, this.config.height / 1.6, "Loading assets - 0%", 32)
 
     //below are two ways of doing the loading bar. Their sizes are updated in the onProgress callback.
     this.loadingRect = this.add.rectangle(this.config.width / 4, this.config.height / 1.5, 0, 20, "0x000000")

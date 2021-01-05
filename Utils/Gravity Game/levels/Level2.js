@@ -1,11 +1,11 @@
 import Phaser from "phaser"
-import { Star } from "./Star"
-import { Planet } from "./Planet"
-import { Portal } from "./Portal"
+import { Star } from "../Star"
+import { Planet } from "../Planet"
+import { Portal } from "../Portal"
 
-export class GameScene extends Phaser.Scene {
+export class Level2 extends Phaser.Scene {
   constructor() {
-    super({ key: "gameScene" })
+    super({ key: "level2" })
   }
 
   init() {
@@ -13,7 +13,6 @@ export class GameScene extends Phaser.Scene {
   }
 
   create() {
-
     this.background = this.add.tileSprite(0, 0, this.config.width, this.config.height, "spacebg")
     this.background.setOrigin(0, 0)
 
@@ -38,6 +37,10 @@ export class GameScene extends Phaser.Scene {
     this.cursors = this.input.keyboard.createCursorKeys();
 
     this.input.on("gameobjectdown", this.toggleGravity, this)
+
+    //creating variable to listen to keyboard events and process them
+    this.cursorKeys = this.input.keyboard.createCursorKeys()
+    this.spacebar = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE)
   }
 
   reachedPortal(pair) {
@@ -104,6 +107,10 @@ export class GameScene extends Phaser.Scene {
     })
 
     this.planet.applyForce(allGravityForces)
+
+    if (Phaser.Input.Keyboard.JustDown(this.spacebar)) {
+      console.log(this.children.list)
+    }
   }
 
 }

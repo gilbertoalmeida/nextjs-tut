@@ -5,7 +5,7 @@ export class Portal extends Phaser.Physics.Matter.Sprite {
     super(world, x, y, "portal", 0, {
       density: 1,
       isSensor: true,
-      onCollideCallback: world.scene.reachedPortal,
+      onCollideCallback: world.scene.reachedPortal.bind(world.scene),
       // isStatic: true,
       chamfer: {
         radius: 32

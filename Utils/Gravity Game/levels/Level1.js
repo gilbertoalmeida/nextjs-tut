@@ -118,6 +118,7 @@ export class Level1 extends Phaser.Scene {
       repeat: 0,
       onComplete: function () {
         this.planet.alpha = 0
+        this.scene.launch("level2")
       },
       callbackScope: this
     })

@@ -10,11 +10,22 @@ export class Star extends Phaser.Physics.Matter.Sprite {
       }
     })
 
-    world.scene.add.existing(this)
+    this.scene = world.scene
+
+    this.setOnCollide(this.implosion.bind(this))
+
+    this.scene.add.existing(this)
 
     this.setInteractive()
 
     this.gravityMag = 0
+  }
+
+  implosion(pair) {
+    let planet = pair.bodyB.gameObject
+    this.scene.gameOver = true
+    planet.setTint(0xFF0000)
+    planet.setStatic(true)
   }
 }
 

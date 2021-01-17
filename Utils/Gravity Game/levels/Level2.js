@@ -44,16 +44,6 @@ export class Level2 extends Phaser.Scene {
     //creating variable to listen to keyboard events and process them
     this.cursorKeys = this.input.keyboard.createCursorKeys()
     this.spacebar = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE)
-
-
-    this.time.addEvent({
-      delay: 1000,
-      callback: function () {
-        this.gameOver = true
-      },
-      callbackScope: this,
-      loop: false
-    })
   }
 
   reachedPortal(pair) {
@@ -152,14 +142,7 @@ export class GameOver extends Phaser.Scene {
 
     let graphics2 = this.add.graphics()
     graphics2.lineStyle(2, 0xffffff, 1)
-    graphics2.beginPath()
-    graphics2.moveTo(this.config.width / 4, this.config.height / 4)
-    graphics2.lineTo(this.config.width * 3 / 4, this.config.height / 4)
-    graphics2.lineTo(this.config.width * 3 / 4, this.config.height * 3 / 4)
-    graphics2.lineTo(this.config.width / 4, this.config.height * 3 / 4)
-    graphics2.lineTo(this.config.width / 4, this.config.height / 4)
-    graphics2.closePath()
-    graphics2.strokePath();
+    graphics2.strokeRect(this.config.width / 4, this.config.height / 4, this.config.width / 2, this.config.height / 2)
 
     this.gameOverText = new Text(this, this.config.width / 2, this.config.height / 3, "Game Over", 24)
     this.gameOverText.setCenterAlign()

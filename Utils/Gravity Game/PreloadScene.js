@@ -38,6 +38,11 @@ export class PreloadScene extends Phaser.Scene {
       frameHeight: 2
     })
 
+    this.load.spritesheet("asteroids", "Gravity Game/asteroids.png", {
+      frameWidth: 24,
+      frameHeight: 32
+    })
+
   }
 
   create() {
@@ -49,7 +54,14 @@ export class PreloadScene extends Phaser.Scene {
       repeat: -1 //its how many times. And -1 is infinite
     })
 
-    this.scene.start("level1")
+    this.anims.create({
+      key: "asteroids_anim",
+      frames: this.anims.generateFrameNumbers("asteroids"),
+      frameRate: 10,
+      repeat: -1
+    })
+
+    this.scene.start("level3")
   }
 
   createLoadingBar() {

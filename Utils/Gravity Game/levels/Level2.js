@@ -114,7 +114,10 @@ export class Level2 extends Phaser.Scene {
 
 
     if (this.gameOver) {
-      this.scene.launch('gameOver', this.gameOver);
+      this.scene.launch('gameOver', {
+        gameOverConfig: this.gameOver,
+        deathLevel: this.scene.key
+      });
       this.gameOver = null
     }
 
@@ -132,7 +135,8 @@ export class GameOver extends Phaser.Scene {
 
   init(data) {
     this.config = this.game.config
-    this.message = data.message
+    this.message = data.gameOverConfig.message
+    this.deathLevel = data.deathLevel
   }
 
   create() {
@@ -149,6 +153,16 @@ export class GameOver extends Phaser.Scene {
 
     this.messageText = new Text(this, this.config.width / 2, this.config.height / 3 + 30, this.message, 18)
     this.messageText.setCenterAlign()
+
+    this.restartText = new Text(this, this.config.width / 2, this.config.height / 2, "Restart level", 24)
+    this.restartText.setCenterAlign()
+    this.restartText.setInteractive()
+    this.restartText.on("pointerdown", this.restartLevel, this)
+  }
+
+  restartLevel() {
+    this.scene.launch(this.deathLevel);
+    this.scene.stop()
   }
 }
 

@@ -11,7 +11,7 @@ export default function Game() {
         const { BootScene } = await import("../Utils/Gravity Game/BootScene")
         const { PreloadScene } = await import("../Utils/Gravity Game/PreloadScene")
         const { Level1, Level1Tutorial } = await import("../Utils/Gravity Game/levels/Level1")
-        const { Level2 } = await import("../Utils/Gravity Game/levels/Level2")
+        const { Level2, GameOver } = await import("../Utils/Gravity Game/levels/Level2")
 
         let config = {
           type: Phaser.AUTO,
@@ -24,10 +24,10 @@ export default function Game() {
             matter: {
               debug: false,
               gravity: false,
-              setBounds: true
+              setBounds: false
             }
           },
-          scene: [BootScene, PreloadScene, Level1, Level1Tutorial, Level2]
+          scene: [BootScene, PreloadScene, Level1, Level1Tutorial, Level2, GameOver]
         }
 
         var game = new Phaser.Game(config);

@@ -2,6 +2,7 @@ import Phaser from "phaser"
 import { Star } from "../Star"
 import { Planet } from "../Planet"
 import { Portal } from "../Portal"
+import { Text } from "../Text"
 
 export class Level2 extends Phaser.Scene {
   constructor() {
@@ -10,6 +11,8 @@ export class Level2 extends Phaser.Scene {
 
   init() {
     this.config = this.game.config
+
+    this.gameOver = false
   }
 
   create() {
@@ -41,11 +44,19 @@ export class Level2 extends Phaser.Scene {
     //creating variable to listen to keyboard events and process them
     this.cursorKeys = this.input.keyboard.createCursorKeys()
     this.spacebar = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE)
+
+
+    this.time.addEvent({
+      delay: 1000,
+      callback: function () {
+        this.gameOver = true
+      },
+      callbackScope: this,
+      loop: false
+    })
   }
 
   reachedPortal(pair) {
-    console.log("level completed")
-
     this.planet.setVelocity(0, 0);
 
     let tween = this.tweens.add({
@@ -59,7 +70,6 @@ export class Level2 extends Phaser.Scene {
       repeat: 0,
       onComplete: function () {
         this.planet.alpha = 0
-        console.log("acabou")
       },
       callbackScope: this
     })
@@ -111,7 +121,48 @@ export class Level2 extends Phaser.Scene {
     if (Phaser.Input.Keyboard.JustDown(this.spacebar)) {
       console.log(this.children.list)
     }
+
+
+    if (this.gameOver) {
+      this.gameOver = false
+      this.scene.launch('gameOver');
+    }
+
+
   }
 
+}
+
+
+export class GameOver extends Phaser.Scene {
+  constructor() {
+    super({ key: "gameOver" })
+  }
+
+  init() {
+    this.config = this.game.config
+
+  }
+
+  create() {
+
+    let graphics = this.add.graphics()
+    graphics.fillStyle(0x000000, 1)
+    graphics.fillRect(this.config.width / 4, this.config.height / 4, this.config.width / 2, this.config.height / 2)
+
+    let graphics2 = this.add.graphics()
+    graphics2.lineStyle(2, 0xffffff, 1)
+    graphics2.beginPath()
+    graphics2.moveTo(this.config.width / 4, this.config.height / 4)
+    graphics2.lineTo(this.config.width * 3 / 4, this.config.height / 4)
+    graphics2.lineTo(this.config.width * 3 / 4, this.config.height * 3 / 4)
+    graphics2.lineTo(this.config.width / 4, this.config.height * 3 / 4)
+    graphics2.lineTo(this.config.width / 4, this.config.height / 4)
+    graphics2.closePath()
+    graphics2.strokePath();
+
+    this.gameOverText = new Text(this, this.config.width / 2, this.config.height / 3, "Game Over", 24)
+    this.gameOverText.setCenterAlign()
+  }
 }
 

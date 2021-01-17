@@ -49,7 +49,7 @@ export class PreloadScene extends Phaser.Scene {
       repeat: -1 //its how many times. And -1 is infinite
     })
 
-    this.scene.start("level2")
+    this.scene.start("level1")
   }
 
   createLoadingBar() {

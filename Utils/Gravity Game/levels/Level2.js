@@ -12,7 +12,7 @@ export class Level2 extends Phaser.Scene {
   init() {
     this.config = this.game.config
 
-    this.gameOver = false
+    this.gameOver = null
   }
 
   create() {
@@ -114,10 +114,11 @@ export class Level2 extends Phaser.Scene {
 
 
     if (this.gameOver) {
-      this.gameOver = false
-      this.scene.launch('gameOver');
+      this.scene.launch('gameOver', this.gameOver);
+      this.gameOver = null
     }
 
+    this.planet.update()
 
   }
 
@@ -129,13 +130,12 @@ export class GameOver extends Phaser.Scene {
     super({ key: "gameOver" })
   }
 
-  init() {
+  init(data) {
     this.config = this.game.config
-
+    this.message = data.message
   }
 
   create() {
-
     let graphics = this.add.graphics()
     graphics.fillStyle(0x000000, 1)
     graphics.fillRect(this.config.width / 4, this.config.height / 4, this.config.width / 2, this.config.height / 2)
@@ -144,8 +144,11 @@ export class GameOver extends Phaser.Scene {
     graphics2.lineStyle(2, 0xffffff, 1)
     graphics2.strokeRect(this.config.width / 4, this.config.height / 4, this.config.width / 2, this.config.height / 2)
 
-    this.gameOverText = new Text(this, this.config.width / 2, this.config.height / 3, "Game Over", 24)
+    this.gameOverText = new Text(this, this.config.width / 2, this.config.height / 3, "Game Over", 28)
     this.gameOverText.setCenterAlign()
+
+    this.messageText = new Text(this, this.config.width / 2, this.config.height / 3 + 30, this.message, 18)
+    this.messageText.setCenterAlign()
   }
 }
 

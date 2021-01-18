@@ -17,11 +17,11 @@ export class PreloadScene extends Phaser.Scene {
   preload() {
     this.createLoadingBar()
 
-    this.scene.add("gameOver", GameOver, false)
     this.scene.add("level1", Level1, false)
     this.scene.add("level1tutorial", Level1Tutorial, false)
     this.scene.add("level2", Level2, false)
     this.scene.add("level3", Level3, false)
+    this.scene.add("gameOver", GameOver, false)
 
     this.load.spritesheet("star", "Gravity Game/star.png", {
       frameWidth: 32,

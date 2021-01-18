@@ -11,14 +11,14 @@
     "@ion-phaser/react": "^1.2.2",
     "date-fns": "^2.16.1",
     "gray-matter": "^4.0.2",
-    "next": "^10.0.0",
+    "next": "^10.0.5",
     "next-transpile-modules": "^6.0.0",
-    "phaser": "^3.50.1",
+    "phaser": "^3.52.0",
     "react": "16.13.1",
     "react-dom": "16.13.1",
     "remark": "^13.0.0",
     "remark-html": "^13.0.1",
-    "swr": "^0.3.9",
+    "swr": "^0.3.11",
     "unfetch": "^4.2.0"
   }
 }

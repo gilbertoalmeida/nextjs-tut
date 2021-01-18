@@ -31,9 +31,9 @@ export class Level3 extends Phaser.Scene {
     this.portal = new Portal(this.matter.world, this.config.width / 4 - 12, this.config.height * 3 / 4)
     this.portal.setRotation(Math.PI)
 
-    this.planet = new Planet(this.matter.world, (this.config.width * 3 / 4) + 75, this.config.height * 3 / 4, 0);
+    this.planet = new Planet(this.matter.world, this.config.width * 3 / 4, this.config.height * 3 / 4 + 75, 0);
 
-    this.planet.setVelocity(0, -1.5);
+    this.planet.setVelocity(1.5, 0);
 
     this.cursors = this.input.keyboard.createCursorKeys();
 

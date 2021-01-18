@@ -30,11 +30,12 @@ export class Level2 extends Phaser.Scene {
 
     this.sun3.gravityMag = -0.04
 
-    this.portal = new Portal(this.matter.world, 100, 50)
+    this.portal = new Portal(this.matter.world, this.config.width - 30, 50)
+    this.portal.setRotation(Math.PI / 2)
 
-    this.planet = new Planet(this.matter.world, this.config.width / 2, 420, 0);
+    this.planet = new Planet(this.matter.world, this.config.width / 2 - 100, 520, 0);
 
-    this.planet.setVelocity(2, 0);
+    this.planet.setVelocity(0, -2);
 
     this.cursors = this.input.keyboard.createCursorKeys();
 
@@ -50,8 +51,8 @@ export class Level2 extends Phaser.Scene {
 
     let tween = this.tweens.add({
       targets: this.planet,
-      y: this.portal.y - 5,
-      x: this.portal.x,
+      y: this.portal.y,
+      x: this.portal.x + 5,
       scale: 0.1,
       alpha: 0.7,
       ease: "Power1",

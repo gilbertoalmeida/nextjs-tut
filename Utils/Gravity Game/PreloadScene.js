@@ -72,12 +72,11 @@ export class PreloadScene extends Phaser.Scene {
     })
 
     this.scene.start("level1")
+    this.scene.stop()
   }
 
   createLoadingBar() {
     //The bootscene is importat to load the necessary things for this part, before the heavy loading starts. It's a pre-preload
-    this.background = this.add.image(0, 0, "spacebg")
-    this.background.setOrigin(0, 0)
 
     this.loadingText = new Text(this, this.config.width / 2, this.config.height / 1.6, "Loading assets - 0%", 32)
 

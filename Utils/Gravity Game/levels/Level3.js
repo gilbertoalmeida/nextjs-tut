@@ -15,9 +15,6 @@ export class Level3 extends Phaser.Scene {
   }
 
   create() {
-    this.background = this.add.tileSprite(0, 0, this.config.width, this.config.height, "spacebg")
-    this.background.setOrigin(0, 0)
-
     this.stars = new Phaser.GameObjects.Group(this)
 
     this.sun = new Star(this.matter.world, this.config.width * 3 / 4, this.config.height * 3 / 4, 0)
@@ -99,9 +96,6 @@ export class Level3 extends Phaser.Scene {
 
 
   update() {
-    this.background.tilePositionY -= 0.005
-    this.background.tilePositionX -= 0.005
-
     let starsArray = this.stars.getChildren()
     let allGravityForces = new Phaser.Math.Vector2(0, 0)
 
@@ -126,7 +120,6 @@ export class Level3 extends Phaser.Scene {
     }
 
     this.planet.update()
-
   }
 
 }

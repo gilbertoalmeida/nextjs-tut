@@ -1,5 +1,9 @@
 import Phaser from "phaser"
 import { Text } from "./Text"
+import { GameOver } from "./GameOver"
+import { Level1, Level1Tutorial } from "./levels/Level1"
+import { Level2 } from "./levels/Level2"
+import { Level3 } from "./levels/Level3"
 
 export class PreloadScene extends Phaser.Scene {
   constructor() {
@@ -12,6 +16,12 @@ export class PreloadScene extends Phaser.Scene {
 
   preload() {
     this.createLoadingBar()
+
+    this.scene.add("level1", Level1, false)
+    this.scene.add("level1tutorial", Level1Tutorial, false)
+    this.scene.add("level2", Level2, false)
+    this.scene.add("level3", Level3, false)
+    this.scene.add("gameOver", GameOver, false)
 
     this.load.spritesheet("star", "Gravity Game/star.png", {
       frameWidth: 32,
@@ -38,6 +48,11 @@ export class PreloadScene extends Phaser.Scene {
       frameHeight: 2
     })
 
+    this.load.spritesheet("asteroids", "Gravity Game/asteroids.png", {
+      frameWidth: 24,
+      frameHeight: 32
+    })
+
   }
 
   create() {
@@ -47,6 +62,13 @@ export class PreloadScene extends Phaser.Scene {
       frames: this.anims.generateFrameNumbers("portal"), //this already gets the frame numbers from a spritesheet. It returns this Array [{key: "ship1", frame: 0}, {key: "ship1", frame: 1}]. You can pass a config second argument like { keys: [0, 1, 0, 2] } if you want a specific order
       frameRate: 10,
       repeat: -1 //its how many times. And -1 is infinite
+    })
+
+    this.anims.create({
+      key: "asteroids_anim",
+      frames: this.anims.generateFrameNumbers("asteroids"),
+      frameRate: 10,
+      repeat: -1
     })
 
     this.scene.start("level1")

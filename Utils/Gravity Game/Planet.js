@@ -39,7 +39,7 @@ export class Planet extends Phaser.Physics.Matter.Sprite {
 
       this.setTint(0xFF0000)
       this.setStatic(true)
-      this.setPosition(this.sceneWidth / 2, this.sceneHeight / 2)
+      this.setPosition(this.sceneWidth / 2, this.sceneHeight + 30)
     }
   }
 }

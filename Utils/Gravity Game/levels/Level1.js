@@ -14,16 +14,11 @@ export class Level1 extends Phaser.Scene {
   init() {
     this.config = this.game.config
 
-    this.scenePlugin = new Phaser.Scenes.ScenePlugin(this)
-
     this.allowGravity = true
     this.turnCount = 0
   }
 
   create() {
-    this.background = this.add.tileSprite(0, 0, this.config.width, this.config.height, "spacebg")
-    this.background.setOrigin(0, 0)
-
     this.stars = new Phaser.GameObjects.Group(this)
 
     this.sun = new Star(this.matter.world, this.config.width / 2, 520, 0)
@@ -47,7 +42,8 @@ export class Level1 extends Phaser.Scene {
     this.turnCount++
 
     if (this.turnCount === 3) {
-      this.scenePlugin.pause()
+      this.scene.pause("level1")
+      this.scene.pause("background")
       this.scene.launch('level1tutorial', {
         mainScene: this
       });
@@ -119,6 +115,7 @@ export class Level1 extends Phaser.Scene {
       onComplete: function () {
         this.planet.alpha = 0
         this.scene.launch("level2")
+        this.scene.stop()
       },
       callbackScope: this
     })
@@ -126,9 +123,6 @@ export class Level1 extends Phaser.Scene {
 
 
   update() {
-    this.background.tilePositionY -= 0.005
-    this.background.tilePositionX -= 0.005
-
     if (this.allowGravity) {
       let starsArray = this.stars.getChildren()
       let allGravityForces = new Phaser.Math.Vector2(0, 0)
@@ -151,7 +145,6 @@ export class Level1Tutorial extends Phaser.Scene {
 
   init(data) {
     this.mainScene = data.mainScene
-    this.mainScenePlugin = new Phaser.Scenes.ScenePlugin(data.mainScene)
   }
 
   create() {
@@ -173,7 +166,8 @@ export class Level1Tutorial extends Phaser.Scene {
       this.clickText.destroy()
       this.touchIcon.destroy()
       this.mainScene.introText2.destroy()
-      this.mainScenePlugin.resume()
+      this.scene.resume("background")
+      this.scene.resume("level1")
       this.mainScene.allowGravity = false
       this.mainScene.sun.setFrame(1)
       this.mainScene.throwOffYouGoText()

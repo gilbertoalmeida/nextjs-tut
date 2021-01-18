@@ -1,6 +1,7 @@
 import Phaser from "phaser"
 import { Text } from "./Text"
 import { GameOver } from "./GameOver"
+import { MainMenu } from "./MainMenu"
 import { Level1, Level1Tutorial } from "./levels/Level1"
 import { Level2 } from "./levels/Level2"
 import { Level3 } from "./levels/Level3"
@@ -22,6 +23,7 @@ export class PreloadScene extends Phaser.Scene {
     this.scene.add("level2", Level2, false)
     this.scene.add("level3", Level3, false)
     this.scene.add("gameOver", GameOver, false)
+    this.scene.add("mainMenu", MainMenu, false)
 
     this.load.spritesheet("star", "Gravity Game/star.png", {
       frameWidth: 32,
@@ -71,7 +73,7 @@ export class PreloadScene extends Phaser.Scene {
       repeat: -1
     })
 
-    this.scene.start("level1")
+    this.scene.start("mainMenu")
     this.scene.stop()
   }
 

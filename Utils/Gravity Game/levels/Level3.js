@@ -21,8 +21,10 @@ export class Level3 extends Phaser.Scene {
     this.stars = new Phaser.GameObjects.Group(this)
 
     this.sun = new Star(this.matter.world, this.config.width * 3 / 4, this.config.height * 3 / 4, 0)
+    this.sun2 = new Star(this.matter.world, this.config.width / 2 - 12, this.config.height / 5, 1)
 
     this.stars.add(this.sun)
+    this.stars.add(this.sun2)
 
     this.sun.gravityMag = -0.03
 
@@ -53,7 +55,7 @@ export class Level3 extends Phaser.Scene {
 
     let tween = this.tweens.add({
       targets: this.planet,
-      y: this.portal.y - 5,
+      y: this.portal.y + 5,
       x: this.portal.x,
       scale: 0.1,
       alpha: 0.7,

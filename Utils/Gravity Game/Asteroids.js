@@ -9,6 +9,18 @@ export class Asteroids extends Phaser.Physics.Matter.Sprite {
 
     this.play("asteroids_anim")
 
+    this.setOnCollide(this.implosion.bind(this))
+
     world.scene.add.existing(this)
+  }
+
+  implosion(pair) {
+    let planet = pair.bodyA.gameObject
+    this.scene.gameOver = {
+      reason: "Asteroid collision",
+      message: "You collided with the\nasteroid belt"
+    }
+    planet.setTint(0xFF0000)
+    planet.setStatic(true)
   }
 }

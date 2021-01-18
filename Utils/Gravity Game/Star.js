@@ -25,7 +25,7 @@ export class Star extends Phaser.Physics.Matter.Sprite {
     let planet = pair.bodyB.gameObject
     this.scene.gameOver = {
       reason: "Star collision",
-      message: "You colided with a star"
+      message: "You collided with a star"
     }
     planet.setTint(0xFF0000)
     planet.setStatic(true)

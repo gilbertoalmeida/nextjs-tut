@@ -1,5 +1,6 @@
 import Phaser from "phaser"
 import { Text } from "./Text"
+import EventHub from './EventHub'
 
 export class MainMenu extends Phaser.Scene {
   constructor() {
@@ -32,5 +33,6 @@ export class MainMenu extends Phaser.Scene {
   startLevel1() {
     this.scene.launch("level1");
     this.scene.stop()
+    EventHub.emit("playingStart")
   }
 }

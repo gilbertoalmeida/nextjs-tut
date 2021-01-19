@@ -1,4 +1,5 @@
 import Phaser from "phaser"
+import EventHub from './EventHub'
 
 export class Asteroids extends Phaser.Physics.Matter.Sprite {
   constructor(world, x, y) {
@@ -15,11 +16,16 @@ export class Asteroids extends Phaser.Physics.Matter.Sprite {
   }
 
   implosion(pair) {
+    EventHub.emit("gameOver", {
+      gameOverConfig: {
+        reason: "Asteroid collision",
+        message: "You collided with the\nasteroid belt",
+        level: this.scene.scene.key
+      }
+    })
+
     let planet = pair.bodyA.gameObject
-    this.scene.gameOver = {
-      reason: "Asteroid collision",
-      message: "You collided with the\nasteroid belt"
-    }
+
     planet.setTint(0xFF0000)
     planet.setStatic(true)
   }

@@ -1,4 +1,5 @@
 import Phaser from "phaser"
+import EventHub from './EventHub'
 
 export class Planet extends Phaser.Physics.Matter.Sprite {
   constructor(world, x, y, frame) {
@@ -32,10 +33,13 @@ export class Planet extends Phaser.Physics.Matter.Sprite {
 
   update() {
     if (this.x > this.sceneWidth + 100 || this.x < -100 || this.y > this.sceneHeight + 100 || this.y < -100) {
-      this.scene.gameOver = {
-        reason: "Drifted",
-        message: "You drifted away"
-      }
+      EventHub.emit("gameOver", {
+        gameOverConfig: {
+          reason: "Drifted",
+          message: "You drifted away",
+          level: this.scene.scene.key
+        }
+      })
 
       this.setTint(0xFF0000)
       this.setStatic(true)

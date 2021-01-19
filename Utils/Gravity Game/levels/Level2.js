@@ -10,8 +10,6 @@ export class Level2 extends Phaser.Scene {
 
   init() {
     this.config = this.game.config
-
-    this.gameOver = null
   }
 
   create() {
@@ -106,15 +104,6 @@ export class Level2 extends Phaser.Scene {
 
     if (Phaser.Input.Keyboard.JustDown(this.spacebar)) {
       console.log(this.children.list)
-    }
-
-
-    if (this.gameOver) {
-      this.scene.launch('gameOver', {
-        gameOverConfig: this.gameOver,
-        deathLevel: this.scene.key
-      });
-      this.gameOver = null
     }
 
     this.planet.update()

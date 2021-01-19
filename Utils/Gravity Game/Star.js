@@ -1,4 +1,5 @@
 import Phaser from "phaser"
+import EventHub from './EventHub'
 
 export class Star extends Phaser.Physics.Matter.Sprite {
   constructor(world, x, y, frame) {
@@ -22,11 +23,16 @@ export class Star extends Phaser.Physics.Matter.Sprite {
   }
 
   implosion(pair) {
+    EventHub.emit("gameOver", {
+      gameOverConfig: {
+        reason: "Star collision",
+        message: "You collided with a star",
+        level: this.scene.scene.key
+      }
+    })
+
     let planet = pair.bodyB.gameObject
-    this.scene.gameOver = {
-      reason: "Star collision",
-      message: "You collided with a star"
-    }
+
     planet.setTint(0xFF0000)
     planet.setStatic(true)
   }

@@ -3,6 +3,7 @@ import { Star } from "../Star"
 import { Planet } from "../Planet"
 import { Portal } from "../Portal"
 import { Asteroids } from "../Asteroids"
+import EventHub from '../EventHub'
 
 export class Level3 extends Phaser.Scene {
   constructor() {
@@ -11,7 +12,6 @@ export class Level3 extends Phaser.Scene {
 
   init() {
     this.config = this.game.config
-    this.gameOver = null
   }
 
   create() {
@@ -61,6 +61,14 @@ export class Level3 extends Phaser.Scene {
       repeat: 0,
       onComplete: function () {
         this.planet.alpha = 0
+        this.planet.setStatic(true)
+        EventHub.emit("gameFinished", {
+          gameOverConfig: {
+            reason: "Finished",
+            message: "Now do it faster",
+            level: this.scene.key
+          }
+        })
       },
       callbackScope: this
     })
@@ -108,15 +116,6 @@ export class Level3 extends Phaser.Scene {
 
     if (Phaser.Input.Keyboard.JustDown(this.spacebar)) {
       console.log(this.children.list)
-    }
-
-
-    if (this.gameOver) {
-      this.scene.launch('gameOver', {
-        gameOverConfig: this.gameOver,
-        deathLevel: this.scene.key
-      });
-      this.gameOver = null
     }
 
     this.planet.update()

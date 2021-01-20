@@ -4,6 +4,7 @@ import EventHub from './EventHub'
 export class Planet extends Phaser.Physics.Matter.Sprite {
   constructor(world, x, y, frame) {
     super(world, x, y, "planet", frame, {
+      label: "planet",
       density: 1,
       friction: 0,
       frictionStatic: 0,

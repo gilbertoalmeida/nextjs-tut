@@ -26,7 +26,7 @@ export class GameOver extends Phaser.Scene {
     // graphics2.lineStyle(2, 0xffffff, 1)
     // graphics2.strokeRect(this.config.width / 4, this.config.height / 4, this.config.width / 2, this.config.height / 2)
 
-    this.gameOverText = new Text(this, this.config.width / 2, this.config.height / 3, this.numberOfDeaths ? "Done" : "Game Over", 28)
+    this.gameOverText = new Text(this, this.config.width / 2, this.config.height / 3, this.timeOfRun ? "Done" : "Game Over", 28)
     this.gameOverText.setCenterAlign()
 
     if (this.timeOfRun) {

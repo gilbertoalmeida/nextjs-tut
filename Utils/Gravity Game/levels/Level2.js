@@ -32,13 +32,7 @@ export class Level2 extends Phaser.Scene {
 
     this.planet.setVelocity(0, -2);
 
-    this.cursors = this.input.keyboard.createCursorKeys();
-
     this.input.on("gameobjectdown", this.toggleGravity, this)
-
-    //creating variable to listen to keyboard events and process them
-    this.cursorKeys = this.input.keyboard.createCursorKeys()
-    this.spacebar = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE)
   }
 
   reachedPortal(pair) {
@@ -101,10 +95,6 @@ export class Level2 extends Phaser.Scene {
     })
 
     this.planet.applyForce(allGravityForces)
-
-    if (Phaser.Input.Keyboard.JustDown(this.spacebar)) {
-      console.log(this.children.list)
-    }
 
     this.planet.update()
 

@@ -12,9 +12,9 @@ export class Background extends Phaser.Scene {
     this.config = this.game.config
     this.playStartTime = 0
     this.playingTime = 0
-
     this.playing = false
     this.numberOfDeaths = 0
+    this.starsMove = true
   }
 
   create() {
@@ -31,6 +31,8 @@ export class Background extends Phaser.Scene {
     EventHub.on('gameOver', this.gameOver, this)
     EventHub.on('backToMenu', this.backToMenu, this)
     EventHub.on('gameFinished', this.gameFinished, this)
+    EventHub.on('pauseStars', this.pauseStars, this)
+    EventHub.on('moveStars', this.moveStars, this)
 
     // using the events of the scene itself to clean my listener when the scene shuts down
     this.events.on(Phaser.Scenes.Events.SHUTDOWN, () => {
@@ -38,12 +40,24 @@ export class Background extends Phaser.Scene {
       EventHub.off('gameOver', this.gameOver, this)
       EventHub.off('backToMenu', this.backToMenu, this)
       EventHub.off('gameFinished', this.gameFinished, this)
+      EventHub.off('pauseStars', this.pauseStars, this)
+      EventHub.off('moveStars', this.moveStars, this)
     })
   }
 
+  pauseStars() {
+    this.starsMove = false
+  }
+
+  moveStars() {
+    this.starsMove = true
+  }
+
   update() {
-    this.background.tilePositionY -= 0.005
-    this.background.tilePositionX -= 0.005
+    if (this.starsMove) {
+      this.background.tilePositionY -= 0.005
+      this.background.tilePositionX -= 0.005
+    }
 
     this.calculatePlayingTime();
   }

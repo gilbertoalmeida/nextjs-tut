@@ -5,6 +5,7 @@ import { Portal } from "../Portal"
 import { Touch } from "../Touch"
 import { Sensor } from "../Sensor"
 import { Text } from "../Text"
+import EventHub from '../EventHub'
 
 export class Level1 extends Phaser.Scene {
   constructor() {
@@ -29,11 +30,12 @@ export class Level1 extends Phaser.Scene {
 
     this.portal = new Portal(this.matter.world, 100, 50)
 
-    this.planet = new Planet(this.matter.world, this.config.width / 2, 420, 0);
+    this.planet = new Planet(this.matter.world, this.config.width / 2, 620, 0);
 
-    this.planet.setVelocity(2, 0);
+    this.planet.setVelocity(-2, 0);
 
-    this.sensor = new Sensor(this.matter.world, 90, 494)
+    this.sensor = new Sensor(this.matter.world, 90, 497)
+    this.sensor.setScale(2)
 
     this.throwIntroText()
   }
@@ -43,7 +45,7 @@ export class Level1 extends Phaser.Scene {
 
     if (this.turnCount === 3) {
       this.scene.pause("level1")
-      this.scene.pause("background")
+      EventHub.emit("pauseStars")
       this.scene.launch('level1tutorial', {
         mainScene: this
       });
@@ -167,7 +169,7 @@ export class Level1Tutorial extends Phaser.Scene {
       this.clickText.destroy()
       this.touchIcon.destroy()
       this.mainScene.introText2.destroy()
-      this.scene.resume("background")
+      EventHub.emit("moveStars")
       this.scene.resume("level1")
       this.mainScene.allowGravity = false
       this.mainScene.sun.setFrame(1)

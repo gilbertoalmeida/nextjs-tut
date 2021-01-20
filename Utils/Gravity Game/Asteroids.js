@@ -16,6 +16,10 @@ export class Asteroids extends Phaser.Physics.Matter.Sprite {
   }
 
   implosion(pair) {
+    if (pair.bodyA.label != "planet") return
+
+    let planet = pair.bodyA.gameObject
+
     EventHub.emit("gameOver", {
       gameOverConfig: {
         reason: "Asteroid collision",
@@ -23,8 +27,6 @@ export class Asteroids extends Phaser.Physics.Matter.Sprite {
         level: this.scene.scene.key
       }
     })
-
-    let planet = pair.bodyA.gameObject
 
     planet.setTint(0xFF0000)
     planet.setStatic(true)

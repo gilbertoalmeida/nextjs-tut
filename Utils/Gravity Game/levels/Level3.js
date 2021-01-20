@@ -3,7 +3,6 @@ import { Star } from "../Star"
 import { Planet } from "../Planet"
 import { Portal } from "../Portal"
 import { Asteroids } from "../Asteroids"
-import EventHub from '../EventHub'
 
 export class Level3 extends Phaser.Scene {
   constructor() {
@@ -32,13 +31,7 @@ export class Level3 extends Phaser.Scene {
 
     this.planet.setVelocity(1.5, 0);
 
-    this.cursors = this.input.keyboard.createCursorKeys();
-
     this.input.on("gameobjectdown", this.toggleGravity, this)
-
-    //creating variable to listen to keyboard events and process them
-    this.cursorKeys = this.input.keyboard.createCursorKeys()
-    this.spacebar = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE)
 
     for (let i = 0; i < 20; i++) {
       let asteroid = new Asteroids(this.matter.world, (this.config.width / 2) - 12, this.config.height - (24 * i))
@@ -61,14 +54,8 @@ export class Level3 extends Phaser.Scene {
       repeat: 0,
       onComplete: function () {
         this.planet.alpha = 0
-        this.planet.setStatic(true)
-        EventHub.emit("gameFinished", {
-          gameOverConfig: {
-            reason: "Finished",
-            message: "Now do it faster",
-            level: this.scene.key
-          }
-        })
+        this.scene.launch("level4")
+        this.scene.stop()
       },
       callbackScope: this
     })
@@ -113,10 +100,6 @@ export class Level3 extends Phaser.Scene {
     })
 
     this.planet.applyForce(allGravityForces)
-
-    if (Phaser.Input.Keyboard.JustDown(this.spacebar)) {
-      console.log(this.children.list)
-    }
 
     this.planet.update()
   }
